@@ -54,4 +54,18 @@ public class Player : MonoBehaviour
         // Update target position
         targetPosition += moveDirection * cubeWidth;
     }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        // if player collides with bomb, explode and set gameOver to true
+        if (other.gameObject.CompareTag("Obstacle"))
+        {
+            GameManager.isGameOver = true;
+            //explosionParticle.Play();
+            //playerAudio.PlayOneShot(explodeSound, 1.0f);
+            //gameOver = true;
+            Debug.Log("Game Over!");
+            //Destroy(other.gameObject);
+        }
+    }
 }

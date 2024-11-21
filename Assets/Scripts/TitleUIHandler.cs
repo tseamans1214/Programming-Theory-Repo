@@ -22,6 +22,7 @@ public class TitleUIHandler : MonoBehaviour
 
     public void StartGame() {
         SceneManager.LoadScene(1);
+        //GameManager.StartGame();
     }
 
     public void QuitGame() {

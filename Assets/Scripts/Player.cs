@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
         targetRotation *= Quaternion.Euler(rotationDirection * 90);
 
         // Update target position
-        targetPosition += moveDirection * cubeWidth;
+        targetPosition += moveDirection * (cubeWidth + 2);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         // if player collides with bomb, explode and set gameOver to true
         if (other.gameObject.CompareTag("Obstacle"))
         {
-            GameManager.isGameOver = true;
+            GameManager.GameOver();
             //explosionParticle.Play();
             //playerAudio.PlayOneShot(explodeSound, 1.0f);
             //gameOver = true;

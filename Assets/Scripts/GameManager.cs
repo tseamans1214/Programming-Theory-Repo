@@ -1,6 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class GameManager : MonoBehaviour
 {
@@ -11,12 +17,29 @@ public class GameManager : MonoBehaviour
     public float spawnRate = 1.0f;
     //private float cubeWidth;
     public GameObject obstaclePrefab;
+    public GameObject gameOverMenu;
+
+    public static GameManager Instance { get; private set; }
+
+    void Awake() {
+        StartGame();
+    }
     // Start is called before the first frame update
     void Start()
     {
+        // if (Instance != null)
+        // {
+        //     Destroy(gameObject);
+        //     return;
+        // }
+        Instance = this;
+        //DontDestroyOnLoad(gameObject);
+
         isGameOver = false;
+
+        //gameOverMenu = GameObject.Find("Game Over Menu");
         //cubeWidth = GetComponent<Renderer>().bounds.size.x;
-        StartCoroutine(SpawnObstacle());
+        
     }
 
     // Update is called once per frame
@@ -44,11 +67,30 @@ public class GameManager : MonoBehaviour
         float spawnPosZ = Random.Range(-700, -700);
         int randomNum = Random.Range(-2,3);
 
-        Vector3 randomPos = new Vector3((cubeWidth + 1) * randomNum , 83.04436f, -700);
+        Vector3 randomPos = new Vector3((cubeWidth + 2) * randomNum , 83.04436f, -700);
 
         return randomPos;
     }
-    void GameOver() {
-
+    public void StartGame() {
+        isGameOver = false;
+        StartCoroutine(SpawnObstacle());
+    }
+    public static void GameOver() {
+        isGameOver = true;
+        Instance.gameOverMenu.gameObject.SetActive(true);
+    }
+    public void Restart() {
+        SceneManager.LoadScene(1);
+        StartGame();
+    }
+    public void ReturnToMainMenu() {
+        SceneManager.LoadScene(0);
+    }
+    public void QuitGame() {
+        #if UNITY_EDITOR
+                EditorApplication.ExitPlaymode();
+        #else
+                Application.Quit(); // original code to quit Unity player
+        #endif
     }
 }

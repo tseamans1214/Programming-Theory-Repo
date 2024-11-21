@@ -25,7 +25,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        PlayerMovement();
+        if (GameManager.isGameOver == false) {
+            PlayerMovement();
+        }
     }
 
     void PlayerMovement() {
@@ -57,15 +59,13 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        // if player collides with bomb, explode and set gameOver to true
+        // if player collides with an obstacle, explode and run GameOver method
         if (other.gameObject.CompareTag("Obstacle"))
         {
             GameManager.GameOver();
             //explosionParticle.Play();
             //playerAudio.PlayOneShot(explodeSound, 1.0f);
-            //gameOver = true;
             Debug.Log("Game Over!");
-            //Destroy(other.gameObject);
         }
     }
 }

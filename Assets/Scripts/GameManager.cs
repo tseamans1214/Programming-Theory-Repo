@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     public float spawnRate = 1.0f;
     //private float cubeWidth;
     public GameObject obstaclePrefab;
-    public GameObject gameOverMenu;
+    [SerializeField] private GameObject gameOverMenu;
 
     public static GameManager Instance { get; private set; }
 
@@ -34,12 +34,7 @@ public class GameManager : MonoBehaviour
         // }
         Instance = this;
         //DontDestroyOnLoad(gameObject);
-
-        isGameOver = false;
-
-        //gameOverMenu = GameObject.Find("Game Over Menu");
-        //cubeWidth = GetComponent<Renderer>().bounds.size.x;
-        
+        isGameOver = false;    
     }
 
     // Update is called once per frame
@@ -79,7 +74,7 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         Instance.gameOverMenu.gameObject.SetActive(true);
     }
-    public void Restart() {
+    public void RestartGame() {
         SceneManager.LoadScene(1);
         StartGame();
     }

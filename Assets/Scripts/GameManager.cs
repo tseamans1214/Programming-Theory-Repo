@@ -90,6 +90,9 @@ public class GameManager : MonoBehaviour
         int offset;
         if (spawningIndex == 1) {
             offset = 4;
+        }
+        else if (spawningIndex == 2) {
+            offset = 8;
         } else {
             offset = 0;
         }

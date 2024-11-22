@@ -93,6 +93,8 @@ public class GameManager : MonoBehaviour
         }
         else if (spawningIndex == 2) {
             offset = 8;
+        } else if (spawningIndex == 3) {
+            offset = 12;
         } else {
             offset = 0;
         }

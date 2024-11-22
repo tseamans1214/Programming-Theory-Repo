@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public float spawnRate = 1.0f;
     //private float cubeWidth;
     public GameObject obstaclePrefab;
+    public List<GameObject> obstaclePrefabs;
+    private GameObject spawningObstacle;
     [SerializeField] private GameObject gameOverMenu;
 
     public static GameManager Instance { get; private set; }
@@ -34,7 +36,13 @@ public class GameManager : MonoBehaviour
         // }
         Instance = this;
         //DontDestroyOnLoad(gameObject);
-        isGameOver = false;    
+        isGameOver = false;   
+
+        // Set a default spawning obstacle
+        if (obstaclePrefabs != null && obstaclePrefabs.Count > 0)
+        {
+            spawningObstacle = obstaclePrefabs[0];
+        } 
     }
 
     // Update is called once per frame
@@ -46,7 +54,10 @@ public class GameManager : MonoBehaviour
     IEnumerator SpawnObstacle() {
         while (isGameOver == false) {
             yield return new WaitForSeconds(spawnRate);
-            Instantiate(obstaclePrefab, GenerateSpawnPosition(), obstaclePrefab.transform.rotation);
+            // Randomly select an obstacle prefab
+            int randomIndex = Random.Range(0, obstaclePrefabs.Count);
+            spawningObstacle = obstaclePrefabs[randomIndex];
+            Instantiate(spawningObstacle, GenerateSpawnPosition(spawningObstacle, randomIndex), spawningObstacle.transform.rotation);
             //int index = Random.Range(0, targets.Count);
             //Instantiate(targets[index]);
         }
@@ -56,13 +67,34 @@ public class GameManager : MonoBehaviour
 
 
     }
-    private Vector3 GenerateSpawnPosition() {
-        float cubeWidth = obstaclePrefab.GetComponent<Renderer>().bounds.size.x;
-        float spawnPosX = Random.Range(cubeWidth, cubeWidth);
-        float spawnPosZ = Random.Range(-700, -700);
-        int randomNum = Random.Range(-2,3);
+    // Working 
+    // private Vector3 GenerateSpawnPosition() {
+    //     float cubeWidth = obstaclePrefab.GetComponent<Renderer>().bounds.size.x;
+    //     float spawnPosX = Random.Range(cubeWidth, cubeWidth);
+    //     float spawnPosZ = Random.Range(-700, -700);
+    //     int randomNum = Random.Range(-2,3);
 
-        Vector3 randomPos = new Vector3((cubeWidth + 2) * randomNum , 83.04436f, -700);
+    //     Vector3 randomPos = new Vector3((cubeWidth + 2) * randomNum , 83.04436f, -700);
+
+    //     return randomPos;
+    // }
+
+    private Vector3 GenerateSpawnPosition(GameObject obstacle, int spawningIndex) {
+        //int randomIndex = Random.Range(0, 2);
+        //spawningObstacle = obstaclePrefabs[randomIndex];
+        float obstacleWidth = obstacle.GetComponent<Renderer>().bounds.size.x;
+        //float spawnPosX = Random.Range(cubeWidth, cubeWidth);
+        //float spawnPosZ = Random.Range(-700, -700);
+        int randomNum = Random.Range(-2,3-spawningIndex);
+
+        int offset;
+        if (spawningIndex == 1) {
+            offset = 4;
+        } else {
+            offset = 0;
+        }
+
+        Vector3 randomPos = new Vector3((10 * randomNum) + offset , 83.04436f, -700);
 
         return randomPos;
     }

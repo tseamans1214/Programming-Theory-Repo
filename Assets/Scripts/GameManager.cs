@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> obstaclePrefabs;
     private GameObject spawningObstacle;
     [SerializeField] private GameObject gameOverMenu;
+    private AudioSource audioSource;
 
     public static GameManager Instance { get; private set; }
 
@@ -105,9 +106,11 @@ public class GameManager : MonoBehaviour
     }
     public void StartGame() {
         isGameOver = false;
+        audioSource = GetComponent<AudioSource>();
         StartCoroutine(SpawnObstacle());
     }
     public static void GameOver() {
+        Instance.StopMusic();
         isGameOver = true;
         Instance.gameOverMenu.gameObject.SetActive(true);
     }
@@ -124,5 +127,13 @@ public class GameManager : MonoBehaviour
         #else
                 Application.Quit(); // original code to quit Unity player
         #endif
+    }
+
+    private void StopMusic()
+    {
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
     }
 }

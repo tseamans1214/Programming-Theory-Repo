@@ -10,6 +10,10 @@ public class Player : MonoBehaviour
     private Vector3 targetPosition;    // Target position
     private float cubeWidth;           // Width of the cube
     private int currentLane;
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private AudioClip explodeSound;
+    [SerializeField] private AudioClip jumpSound;
+    private AudioSource playerAudio;
 
     void Start()
     {
@@ -21,6 +25,8 @@ public class Player : MonoBehaviour
         cubeWidth = GetComponent<Renderer>().bounds.size.x;
 
         currentLane = 3;
+
+        playerAudio = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -34,11 +40,13 @@ public class Player : MonoBehaviour
         // Check for key presses and set target rotation/position
         if (Input.GetKeyDown(KeyCode.LeftArrow) && currentLane > 1)
         {
+            playerAudio.PlayOneShot(jumpSound, 1.0f);
             RotateAndMove(Vector3.forward, Vector3.left);
             currentLane += -1;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) && currentLane < 5)
         {
+            playerAudio.PlayOneShot(jumpSound, 1.0f);
             RotateAndMove(Vector3.back, Vector3.right);
             currentLane += 1;
         }
@@ -62,10 +70,19 @@ public class Player : MonoBehaviour
         // if player collides with an obstacle, explode and run GameOver method
         if (other.gameObject.CompareTag("Obstacle"))
         {
+            playerAudio.PlayOneShot(explodeSound, 1.0f);
+            Instantiate(explosionPrefab, transform.position, transform.rotation);
+            //explosionParticle.Play();
             GameManager.GameOver();
             //explosionParticle.Play();
             //playerAudio.PlayOneShot(explodeSound, 1.0f);
             Debug.Log("Game Over!");
+            // Disable the player's visuals or collider to prevent interaction
+            GetComponent<Collider>().enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
+
+            // Destroy the player object after a delay
+            //Destroy(gameObject, 2f); // Adjust the delay to match the explosion duration
         }
     }
 }

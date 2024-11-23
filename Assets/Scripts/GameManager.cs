@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     private GameObject spawningObstacle;
     [SerializeField] private GameObject gameOverMenu;
     private AudioSource audioSource;
+    [SerializeField] private TextMeshProUGUI timerText; // Assign a UI Text element in the Inspector (optional)
+    private float elapsedTime = 0f; // Tracks time the player has been alive
 
     public static GameManager Instance { get; private set; }
 
@@ -49,7 +51,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateTimer();
     }
 
     IEnumerator SpawnObstacle() {
@@ -135,5 +137,30 @@ public class GameManager : MonoBehaviour
         {
             audioSource.Stop();
         }
+    }
+
+    private void UpdateTimer() {
+        if (isGameOver == false)
+        {
+            // Increment the timer
+            elapsedTime += Time.deltaTime;
+
+            // Update the timer display (optional)
+            if (timerText != null)
+            {
+                timerText.text = "Time Survived: " + FormatTime(elapsedTime);
+            }
+        }
+    }
+
+    private string FormatTime(float time)
+    {
+        // Convert total seconds to hours, minutes, and seconds
+        int hours = Mathf.FloorToInt(time / 3600);
+        int minutes = Mathf.FloorToInt((time % 3600) / 60);
+        int seconds = Mathf.FloorToInt(time % 60);
+
+        // Return a formatted string in HH:MM:SS
+        return $"{hours:D2}:{minutes:D2}:{seconds:D2}";
     }
 }

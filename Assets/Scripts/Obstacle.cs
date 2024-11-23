@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    public float verticleSpeed;
-    int width;
-    int height;
-    //Color color;
+    [SerializeField] protected float verticleSpeed;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +12,7 @@ public class Obstacle : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (GameManager.isGameOver == false) {
             Move();

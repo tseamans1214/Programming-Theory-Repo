@@ -79,12 +79,12 @@ public class GameManager : MonoBehaviour
 
         int offset;
         if (spawningIndex == 1) {
-            offset = 4;
+            offset = 5;
         }
         else if (spawningIndex == 2) {
-            offset = 8;
+            offset = 10;
         } else if (spawningIndex == 3) {
-            offset = 12;
+            offset = 15;
         } else {
             offset = 0;
         }

@@ -24,5 +24,9 @@ public class Obstacle : MonoBehaviour
 
     public virtual void Move() {
         transform.Translate(Vector3.forward * Time.deltaTime * verticleSpeed);
+
+        if (transform.position.z < -1000) {
+            Destroy(gameObject);
+        }
     }
 }

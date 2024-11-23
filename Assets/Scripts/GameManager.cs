@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText; // Assign a UI Text element in the Inspector (optional)
     private float elapsedTime = 0f; // Tracks time the player has been alive
 
+    [SerializeField] private TextMeshProUGUI playerNameText;
+    [SerializeField] private TextMeshProUGUI highscoreText;
+
     public static GameManager Instance { get; private set; }
 
     void Awake() {
@@ -66,22 +69,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void SpawnObstacles() {
-
-
-    }
-    // Working 
-    // private Vector3 GenerateSpawnPosition() {
-    //     float cubeWidth = obstaclePrefab.GetComponent<Renderer>().bounds.size.x;
-    //     float spawnPosX = Random.Range(cubeWidth, cubeWidth);
-    //     float spawnPosZ = Random.Range(-700, -700);
-    //     int randomNum = Random.Range(-2,3);
-
-    //     Vector3 randomPos = new Vector3((cubeWidth + 2) * randomNum , 83.04436f, -700);
-
-    //     return randomPos;
-    // }
-
     private Vector3 GenerateSpawnPosition(GameObject obstacle, int spawningIndex) {
         //int randomIndex = Random.Range(0, 2);
         //spawningObstacle = obstaclePrefabs[randomIndex];
@@ -107,6 +94,14 @@ public class GameManager : MonoBehaviour
         return randomPos;
     }
     public void StartGame() {
+        // Set Player and High Score Text fields
+        playerNameText.text = "Player: " + ScoreManager.Instance.currentPlayerName;
+        if (ScoreManager.Instance.highScorePlayerScore > 0) {
+            highscoreText.text = ScoreManager.Instance.highScorePlayerName 
+                + " : " + FormatTime(ScoreManager.Instance.highScorePlayerScore);
+        } else {
+            highscoreText.text = "None Recorded";
+        }
         isGameOver = false;
         audioSource = GetComponent<AudioSource>();
         StartCoroutine(SpawnObstacle());
@@ -114,6 +109,11 @@ public class GameManager : MonoBehaviour
     public static void GameOver() {
         Instance.StopMusic();
         isGameOver = true;
+        if (ScoreManager.Instance.currentPlayerScore > ScoreManager.Instance.highScorePlayerScore) {
+            ScoreManager.Instance.SavePlayerData();
+            Instance.highscoreText.text = ScoreManager.Instance.highScorePlayerName + " : " + Instance.FormatTime(ScoreManager.Instance.highScorePlayerScore);
+        }
+        ScoreManager.Instance.currentPlayerScore = 0;
         Instance.gameOverMenu.gameObject.SetActive(true);
     }
     public void RestartGame() {
@@ -144,11 +144,13 @@ public class GameManager : MonoBehaviour
         {
             // Increment the timer
             elapsedTime += Time.deltaTime;
+            // Update Playerscore
+            ScoreManager.Instance.currentPlayerScore = Mathf.FloorToInt(elapsedTime);
 
             // Update the timer display (optional)
             if (timerText != null)
             {
-                timerText.text = "Time Survived: " + FormatTime(elapsedTime);
+                timerText.text = "Time: " + FormatTime(elapsedTime);
             }
         }
     }

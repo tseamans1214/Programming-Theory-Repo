@@ -33,6 +33,9 @@ public class GameManager : MonoBehaviour
     private int numObstacleTypes = 1;
     public static int numLanes = 5;
 
+    public Renderer lane0;
+    public Renderer lane6;
+
     // Increase Difficulty
     // Every 10 seconds, increase speed by 1
     // After every 30 seconds, add a new block type
@@ -94,6 +97,13 @@ public class GameManager : MonoBehaviour
             MovingObstacle.xBoundary = 35;
             numLanes = 7;
             Player.currentLane++;
+
+            Material lane0Material = Resources.Load<Material>("Materials/Rainbow/Violet");
+            Material lane6Material = Resources.Load<Material>("Materials/Rainbow/Red");
+            lane0.material = lane0Material;
+            lane6.material = lane6Material;
+            spawnRate = 0.5f;
+
         }
     }
 

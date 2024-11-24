@@ -10,42 +10,32 @@ using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
-    // timer
-    // timerHighScore
+    public static GameManager Instance { get; private set; }
     public static bool isGameOver;
-    public  float spawnRange = 9.0f;
-    public float spawnRate = 1.0f;
-    //private float cubeWidth;
-    public GameObject obstaclePrefab;
     public List<GameObject> obstaclePrefabs;
     private GameObject spawningObstacle;
-    [SerializeField] private GameObject gameOverMenu;
+    
     private AudioSource audioSource;
-    [SerializeField] private TextMeshProUGUI timerText; // Assign a UI Text element in the Inspector (optional)
+    
     private float elapsedTime = 0f; // Tracks time the player has been alive
 
+    // GUI
+    [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI playerNameText;
     [SerializeField] private TextMeshProUGUI highscoreText;
+    [SerializeField] private GameObject gameOverMenu;
 
-    public static GameManager Instance { get; private set; }
-
+    // Variables for increasting difficulty
+    [SerializeField] private float spawnRate = 1.0f;
     [SerializeField] private float speedIncreaseInterval = 10f;
     private int numObstacleTypes = 1;
+
+    // Variables for adding new lanes
     public static int numLanes = 5;
-
-    public Renderer lane0;
-    public Renderer lane6;
-
-    // Increase Difficulty
-    // Every 10 seconds, increase speed by 1
-    // After every 30 seconds, add a new block type
-    // After 1 minute, add random chance for moving blocks starting with size 1 block
-    // Add more lanes?
-    // Add multiple blocks on one lane?
-
-    // ADD TO APP description and credits page
-    // Music by Matthew Pablo
-    // www.matthewpablo.com
+    public GameObject lane0;
+    public GameObject lane6;
+    [SerializeField] private Material lane0Material;
+    [SerializeField] private Material lane6Material;
 
     void Awake() {
         StartGame();
@@ -53,13 +43,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // if (Instance != null)
-        // {
-        //     Destroy(gameObject);
-        //     return;
-        // }
         Instance = this;
-        //DontDestroyOnLoad(gameObject);
         isGameOver = false;   
 
         // Set a default spawning obstacle
@@ -84,11 +68,14 @@ public class GameManager : MonoBehaviour
         }
         // Increase the number of block types every 30 seconds
         if (elapsedTime >= 30) {
+            // Add 2 new lanes
+            AddLanes();
             numObstacleTypes = 4;
+            spawnRate = 0.5f;
         } else if (elapsedTime >= 20) {
             numObstacleTypes = 3;
         } else if (elapsedTime >= 10) {
-            AddLanes();
+            
             numObstacleTypes = 2;
         }
     }
@@ -97,13 +84,11 @@ public class GameManager : MonoBehaviour
             MovingObstacle.xBoundary = 35;
             numLanes = 7;
             Player.currentLane++;
-
-            Material lane0Material = Resources.Load<Material>("Materials/Rainbow/Violet");
-            Material lane6Material = Resources.Load<Material>("Materials/Rainbow/Red");
-            lane0.material = lane0Material;
-            lane6.material = lane6Material;
-            spawnRate = 0.5f;
-
+            
+            Renderer lane0Renderer = lane0.GetComponent<Renderer>();
+            Renderer lane6Renderer = lane6.GetComponent<Renderer>();
+            lane0Renderer.material = lane0Material;
+            lane6Renderer.material = lane6Material;
         }
     }
 
@@ -116,18 +101,12 @@ public class GameManager : MonoBehaviour
             int randomIndex = Random.Range(0, numObstacleTypes);
 
             // Randomly make it a moving object
-            //if (randomIndex == 0) {
-                int randomChanceToMove = Random.Range(0, 2);
-                if (randomChanceToMove == 0) {
-                    randomIndex += 4;
-                }
-            //}
-
+            int randomChanceToMove = Random.Range(0, 2);
+            if (randomChanceToMove == 0) {
+                randomIndex += 4;
+            }
             spawningObstacle = obstaclePrefabs[randomIndex];
-           
             Instantiate(spawningObstacle, GenerateSpawnPosition(spawningObstacle, randomIndex), spawningObstacle.transform.rotation);
-            //int index = Random.Range(0, targets.Count);
-            //Instantiate(targets[index]);
         }
     }
 
@@ -138,7 +117,6 @@ public class GameManager : MonoBehaviour
         }
         float obstacleWidth = obstacle.GetComponent<Renderer>().bounds.size.x;
         // Get random number for starting lane position
-        //Debug.Log("numLanes: " + numLanes);
         int randomNum;
         if (numLanes == 5) {
             randomNum = Random.Range(-2,3-spawningIndex);

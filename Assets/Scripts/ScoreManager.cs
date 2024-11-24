@@ -22,18 +22,8 @@ public class ScoreManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         LoadPlayerData();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    // Class to store player save data
     [System.Serializable]
     class SaveData
     {

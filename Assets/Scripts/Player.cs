@@ -40,16 +40,12 @@ public class Player : MonoBehaviour
         // Check for key presses and set target rotation/position
         if (Input.GetKeyDown(KeyCode.LeftArrow) && currentLane > 1)
         {
-            Debug.Log("numLanes: " + GameManager.numLanes);
-            Debug.Log("currentLane: " + currentLane);
             playerAudio.PlayOneShot(jumpSound, 1.0f);
             RotateAndMove(Vector3.forward, Vector3.left);
             currentLane += -1;
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) && currentLane < GameManager.numLanes)
         {
-            Debug.Log("numLanes: " + GameManager.numLanes);
-            Debug.Log("currentLane: " + currentLane);
             playerAudio.PlayOneShot(jumpSound, 1.0f);
             RotateAndMove(Vector3.back, Vector3.right);
             currentLane += 1;
@@ -76,17 +72,11 @@ public class Player : MonoBehaviour
         {
             playerAudio.PlayOneShot(explodeSound, 1.0f);
             Instantiate(explosionPrefab, transform.position, transform.rotation);
-            //explosionParticle.Play();
             GameManager.GameOver();
-            //explosionParticle.Play();
-            //playerAudio.PlayOneShot(explodeSound, 1.0f);
             Debug.Log("Game Over!");
-            // Disable the player's visuals or collider to prevent interaction
             GetComponent<Collider>().enabled = false;
             GetComponent<MeshRenderer>().enabled = false;
 
-            // Destroy the player object after a delay
-            //Destroy(gameObject, 2f); // Adjust the delay to match the explosion duration
         }
     }
 }

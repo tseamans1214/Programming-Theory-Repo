@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     private Quaternion targetRotation; // Target rotation
     private Vector3 targetPosition;    // Target position
     private float cubeWidth;           // Width of the cube
-    private int currentLane;
+    public static int currentLane;
     [SerializeField] private GameObject explosionPrefab;
     [SerializeField] private AudioClip explodeSound;
     [SerializeField] private AudioClip jumpSound;
@@ -40,12 +40,16 @@ public class Player : MonoBehaviour
         // Check for key presses and set target rotation/position
         if (Input.GetKeyDown(KeyCode.LeftArrow) && currentLane > 1)
         {
+            Debug.Log("numLanes: " + GameManager.numLanes);
+            Debug.Log("currentLane: " + currentLane);
             playerAudio.PlayOneShot(jumpSound, 1.0f);
             RotateAndMove(Vector3.forward, Vector3.left);
             currentLane += -1;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && currentLane < 5)
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && currentLane < GameManager.numLanes)
         {
+            Debug.Log("numLanes: " + GameManager.numLanes);
+            Debug.Log("currentLane: " + currentLane);
             playerAudio.PlayOneShot(jumpSound, 1.0f);
             RotateAndMove(Vector3.back, Vector3.right);
             currentLane += 1;

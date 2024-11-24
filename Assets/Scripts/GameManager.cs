@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private float speedIncreaseInterval = 10f;
     private int numObstacleTypes = 1;
+    public static int numLanes = 5;
 
     // Increase Difficulty
     // Every 10 seconds, increase speed by 1
@@ -84,7 +85,15 @@ public class GameManager : MonoBehaviour
         } else if (elapsedTime >= 20) {
             numObstacleTypes = 3;
         } else if (elapsedTime >= 10) {
+            AddLanes();
             numObstacleTypes = 2;
+        }
+    }
+    void AddLanes() {
+        if (numLanes != 7) {
+            MovingObstacle.xBoundary = 35;
+            numLanes = 7;
+            Player.currentLane++;
         }
     }
 
@@ -113,16 +122,21 @@ public class GameManager : MonoBehaviour
     }
 
     private Vector3 GenerateSpawnPosition(GameObject obstacle, int spawningIndex) {
+        // If index is >=4, it is a moving block so substract for to get the correct starting index for size of block
         if (spawningIndex >= 4) {
             spawningIndex -= 4;
         }
-        //int randomIndex = Random.Range(0, 2);
-        //spawningObstacle = obstaclePrefabs[randomIndex];
         float obstacleWidth = obstacle.GetComponent<Renderer>().bounds.size.x;
-        //float spawnPosX = Random.Range(cubeWidth, cubeWidth);
-        //float spawnPosZ = Random.Range(-700, -700);
-        int randomNum = Random.Range(-2,3-spawningIndex);
+        // Get random number for starting lane position
+        //Debug.Log("numLanes: " + numLanes);
+        int randomNum;
+        if (numLanes == 5) {
+            randomNum = Random.Range(-2,3-spawningIndex);
+        } else {
+            randomNum = Random.Range(-3,4-spawningIndex);
+        }
 
+        // Change offset based on size of block
         int offset;
         if (spawningIndex == 1) {
             offset = 5;
@@ -153,6 +167,7 @@ public class GameManager : MonoBehaviour
         Obstacle.verticleSpeed = -50f;
         speedIncreaseInterval = 10f;
         numObstacleTypes = 1;
+        numLanes = 5;
         StartCoroutine(SpawnObstacle());
     }
     public static void GameOver() {

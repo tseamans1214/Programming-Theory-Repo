@@ -6,12 +6,13 @@ public class MovingObstacle : Obstacle
 {
     //[SerializeField] private float verticleSpeed;
     [SerializeField] private float horizontalSpeed;
-    [SerializeField] private float xBoundary = 25;
+    public static float xBoundary = 25;
 
     void Start() {
         horizontalSpeed = Random.Range(horizontalSpeed / 2, horizontalSpeed);
         //horizontalSpeed = 20;
-        xBoundary = 25;
+        //xBoundary = 25;
+        Debug.Log("xBoundary: " + xBoundary);
         int randomNum = Random.Range(0, 2);
         if (randomNum == 1) {
             horizontalSpeed *= -1;

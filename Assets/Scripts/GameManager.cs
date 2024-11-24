@@ -39,6 +39,10 @@ public class GameManager : MonoBehaviour
     // Add more lanes?
     // Add multiple blocks on one lane?
 
+    // ADD TO APP description and credits page
+    // Music by Matthew Pablo
+    // www.matthewpablo.com
+
     void Awake() {
         StartGame();
     }

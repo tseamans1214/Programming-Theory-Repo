@@ -949,10 +949,15 @@ MonoBehaviour:
   - {fileID: 2958876287991112740, guid: f1ca18c387507da4c8129fff6d951fb5, type: 3}
   - {fileID: 9064606420086096793, guid: 471adcc3b1bba1b44accb22cb6eb05de, type: 3}
   - {fileID: 7767835049933593421, guid: 04ba617be3b048744ad67d0ecb904e55, type: 3}
+  - {fileID: 8715295259755032187, guid: ddd7cfaa34065e6438bfc98e8132db51, type: 3}
+  - {fileID: 2958876287991112740, guid: ed93ea2b399a9d44993db91fc716ee2e, type: 3}
+  - {fileID: 9064606420086096793, guid: 9d0d84baa6da4c045895533fd04218b8, type: 3}
+  - {fileID: 7767835049933593421, guid: 8d7a69072ec969b429e069060100b6e9, type: 3}
   gameOverMenu: {fileID: 2062672384}
   timerText: {fileID: 762394334}
   playerNameText: {fileID: 342099910}
   highscoreText: {fileID: 2013135415}
+  speedIncreaseInterval: 10
 --- !u!82 &791925616
 AudioSource:
   m_ObjectHideFlags: 0

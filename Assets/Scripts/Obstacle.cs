@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
-    [SerializeField] protected float verticleSpeed;
+    static public float verticleSpeed;
     // Start is called before the first frame update
     void Start()
     {

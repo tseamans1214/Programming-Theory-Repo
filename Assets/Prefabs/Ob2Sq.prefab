@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 5204523845505785294}
   - component: {fileID: 2888772671234143154}
   - component: {fileID: -2409724106528792865}
-  - component: {fileID: 454558212460526219}
   m_Layer: 0
   m_Name: Ob2Sq
   m_TagString: Obstacle
@@ -147,19 +146,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e336e57c5b8d2024d85696c79589a219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  verticleSpeed: -50
---- !u!114 &454558212460526219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2958876287991112740}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55e4c47628eac244f81a5ab0a46a85bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  verticleSpeed: -50
-  horizontalSpeed: 20
-  xBoundary: 25

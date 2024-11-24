@@ -29,6 +29,16 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
 
+    [SerializeField] private float speedIncreaseInterval = 10f;
+    private int numObstacleTypes = 1;
+
+    // Increase Difficulty
+    // Every 10 seconds, increase speed by 1
+    // After every 30 seconds, add a new block type
+    // After 1 minute, add random chance for moving blocks starting with size 1 block
+    // Add more lanes?
+    // Add multiple blocks on one lane?
+
     void Awake() {
         StartGame();
     }
@@ -55,14 +65,43 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpdateTimer();
+        UpdateDifficulty();
+    }
+
+    void UpdateDifficulty() {
+        // Increase speed by 1 every 10 seconds
+        if (elapsedTime > speedIncreaseInterval) {
+            Obstacle.verticleSpeed += -2;
+            speedIncreaseInterval += 10;
+        }
+        // Increase the number of block types every 30 seconds
+        if (elapsedTime >= 30) {
+            numObstacleTypes = 4;
+        } else if (elapsedTime >= 20) {
+            numObstacleTypes = 3;
+        } else if (elapsedTime >= 10) {
+            numObstacleTypes = 2;
+        }
     }
 
     IEnumerator SpawnObstacle() {
         while (isGameOver == false) {
+            // Wait for x seconds to spwawn
             yield return new WaitForSeconds(spawnRate);
+
             // Randomly select an obstacle prefab
-            int randomIndex = Random.Range(0, obstaclePrefabs.Count);
+            int randomIndex = Random.Range(0, numObstacleTypes);
+
+            // Randomly make it a moving object
+            //if (randomIndex == 0) {
+                int randomChanceToMove = Random.Range(0, 2);
+                if (randomChanceToMove == 0) {
+                    randomIndex += 4;
+                }
+            //}
+
             spawningObstacle = obstaclePrefabs[randomIndex];
+           
             Instantiate(spawningObstacle, GenerateSpawnPosition(spawningObstacle, randomIndex), spawningObstacle.transform.rotation);
             //int index = Random.Range(0, targets.Count);
             //Instantiate(targets[index]);
@@ -70,6 +109,9 @@ public class GameManager : MonoBehaviour
     }
 
     private Vector3 GenerateSpawnPosition(GameObject obstacle, int spawningIndex) {
+        if (spawningIndex >= 4) {
+            spawningIndex -= 4;
+        }
         //int randomIndex = Random.Range(0, 2);
         //spawningObstacle = obstaclePrefabs[randomIndex];
         float obstacleWidth = obstacle.GetComponent<Renderer>().bounds.size.x;
@@ -104,6 +146,9 @@ public class GameManager : MonoBehaviour
         }
         isGameOver = false;
         audioSource = GetComponent<AudioSource>();
+        Obstacle.verticleSpeed = -50f;
+        speedIncreaseInterval = 10f;
+        numObstacleTypes = 1;
         StartCoroutine(SpawnObstacle());
     }
     public static void GameOver() {

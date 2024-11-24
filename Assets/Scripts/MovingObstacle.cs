@@ -7,6 +7,16 @@ public class MovingObstacle : Obstacle
     //[SerializeField] private float verticleSpeed;
     [SerializeField] private float horizontalSpeed;
     [SerializeField] private float xBoundary = 25;
+
+    void Start() {
+        horizontalSpeed = Random.Range(horizontalSpeed / 2, horizontalSpeed);
+        //horizontalSpeed = 20;
+        xBoundary = 25;
+        int randomNum = Random.Range(0, 2);
+        if (randomNum == 1) {
+            horizontalSpeed *= -1;
+        }
+    }
     public override void Move() {
         transform.Translate(Vector3.forward * Time.deltaTime * verticleSpeed);
 

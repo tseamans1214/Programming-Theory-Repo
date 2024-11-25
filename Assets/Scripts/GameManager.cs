@@ -84,6 +84,9 @@ public class GameManager : MonoBehaviour
             MovingObstacle.xBoundary = 35;
             numLanes = 7;
             Player.currentLane++;
+
+            lane0.SetActive(true);
+            lane6.SetActive(true);
             
             Renderer lane0Renderer = lane0.GetComponent<Renderer>();
             Renderer lane6Renderer = lane6.GetComponent<Renderer>();
@@ -153,6 +156,7 @@ public class GameManager : MonoBehaviour
         isGameOver = false;
         audioSource = GetComponent<AudioSource>();
         Obstacle.verticleSpeed = -50f;
+        MovingObstacle.xBoundary = 25;
         speedIncreaseInterval = 10f;
         numObstacleTypes = 1;
         numLanes = 5;

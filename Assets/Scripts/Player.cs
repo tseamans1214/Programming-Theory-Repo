@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
@@ -15,6 +16,32 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip jumpSound;
     private AudioSource playerAudio;
 
+    private PlayerInput playerInput;
+
+    private void OnEnable()
+    {
+        // Initialize and enable the Input System
+        if (playerInput == null)
+        {
+            playerInput = new PlayerInput();
+        }
+        playerInput.Player.Enable();
+
+        // Subscribe to the "Move" actions
+        playerInput.Player.MoveLeft.performed += MoveLeft;
+        playerInput.Player.MoveRight.performed += MoveRight;
+    }
+
+    private void OnDisable()
+    {
+        if (playerInput != null)
+        {
+            playerInput.Player.MoveLeft.performed -= MoveLeft;
+            playerInput.Player.MoveRight.performed -= MoveRight;
+            playerInput.Player.Disable();
+        }
+    }
+
     void Start()
     {
         // Initialize target rotation and position
@@ -27,6 +54,9 @@ public class Player : MonoBehaviour
         currentLane = 3;
 
         playerAudio = GetComponent<AudioSource>();
+
+        playerInput.Player.MoveLeft.performed += MoveLeft;
+        playerInput.Player.MoveRight.performed += MoveRight;
     }
 
     void Update()
@@ -38,22 +68,42 @@ public class Player : MonoBehaviour
 
     void PlayerMovement() {
         // Check for key presses and set target rotation/position
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && currentLane > 1)
-        {
+        // if (Input.GetKeyDown(KeyCode.LeftArrow) && currentLane > 1)
+        // {
+        //     playerAudio.PlayOneShot(jumpSound, 1.0f);
+        //     RotateAndMove(Vector3.forward, Vector3.left);
+        //     currentLane += -1;
+        // }
+        // else if (Input.GetKeyDown(KeyCode.RightArrow) && currentLane < GameManager.numLanes)
+        // {
+        //     playerAudio.PlayOneShot(jumpSound, 1.0f);
+        //     RotateAndMove(Vector3.back, Vector3.right);
+        //     currentLane += 1;
+        // }
+
+        // Smoothly rotate and move the cube
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, rotationSpeed * Time.deltaTime);
+    }
+
+    public void MoveLeft(InputAction.CallbackContext ctx) {
+        if (currentLane > 1 && GameManager.isGameOver == false)
+         {
             playerAudio.PlayOneShot(jumpSound, 1.0f);
             RotateAndMove(Vector3.forward, Vector3.left);
             currentLane += -1;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && currentLane < GameManager.numLanes)
+        
+    }
+
+    public void MoveRight(InputAction.CallbackContext ctx) {
+        if (currentLane < GameManager.numLanes && GameManager.isGameOver == false)
         {
             playerAudio.PlayOneShot(jumpSound, 1.0f);
             RotateAndMove(Vector3.back, Vector3.right);
             currentLane += 1;
         }
-
-        // Smoothly rotate and move the cube
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, rotationSpeed * Time.deltaTime);
+        
     }
 
     void RotateAndMove(Vector3 rotationDirection, Vector3 moveDirection)

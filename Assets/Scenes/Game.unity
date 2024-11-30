@@ -997,8 +997,6 @@ MonoBehaviour:
   speedIncreaseInterval: 10
   lane0: {fileID: 1762278448}
   lane6: {fileID: 2052892354}
-  lane0Material: {fileID: 2100000, guid: 47234da6eb22a1e41855d2795e480e1b, type: 2}
-  lane6Material: {fileID: 2100000, guid: 117713165811daa44ac78ea74221dc9c, type: 2}
 --- !u!82 &791925616
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3111,7 +3109,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: edc8e652067ced24aae805a54eec845e, type: 2}
+  - {fileID: 2100000, guid: 47234da6eb22a1e41855d2795e480e1b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3839,7 +3837,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: edc8e652067ced24aae805a54eec845e, type: 2}
+  - {fileID: 2100000, guid: 117713165811daa44ac78ea74221dc9c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

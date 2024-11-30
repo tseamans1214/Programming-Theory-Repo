@@ -67,20 +67,6 @@ public class Player : MonoBehaviour
     }
 
     void PlayerMovement() {
-        // Check for key presses and set target rotation/position
-        // if (Input.GetKeyDown(KeyCode.LeftArrow) && currentLane > 1)
-        // {
-        //     playerAudio.PlayOneShot(jumpSound, 1.0f);
-        //     RotateAndMove(Vector3.forward, Vector3.left);
-        //     currentLane += -1;
-        // }
-        // else if (Input.GetKeyDown(KeyCode.RightArrow) && currentLane < GameManager.numLanes)
-        // {
-        //     playerAudio.PlayOneShot(jumpSound, 1.0f);
-        //     RotateAndMove(Vector3.back, Vector3.right);
-        //     currentLane += 1;
-        // }
-
         // Smoothly rotate and move the cube
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, rotationSpeed * Time.deltaTime);
@@ -123,7 +109,6 @@ public class Player : MonoBehaviour
             playerAudio.PlayOneShot(explodeSound, 1.0f);
             Instantiate(explosionPrefab, transform.position, transform.rotation);
             GameManager.GameOver();
-            Debug.Log("Game Over!");
             GetComponent<Collider>().enabled = false;
             GetComponent<MeshRenderer>().enabled = false;
 

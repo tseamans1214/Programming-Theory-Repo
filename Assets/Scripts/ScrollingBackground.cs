@@ -11,7 +11,6 @@ public class ScrollingBackground : Obstacle
     {
         startPos = transform.position;
         repeatWidth = GetComponent<BoxCollider>().size.x / 2;
-        Debug.Log("repeatWidth: " + repeatWidth);
     }
     [SerializeField] private int direction;
     public override void Move() {

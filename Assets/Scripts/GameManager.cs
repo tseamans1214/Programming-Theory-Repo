@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     public static bool isGameOver;
     public List<GameObject> obstaclePrefabs;
     private GameObject spawningObstacle;
-    
     private AudioSource audioSource;
     
     private float elapsedTime = 0f; // Tracks time the player has been alive
@@ -34,8 +33,6 @@ public class GameManager : MonoBehaviour
     public static int numLanes = 5;
     public GameObject lane0;
     public GameObject lane6;
-    [SerializeField] private Material lane0Material;
-    [SerializeField] private Material lane6Material;
 
     void Awake() {
         StartGame();
@@ -87,11 +84,6 @@ public class GameManager : MonoBehaviour
 
             lane0.SetActive(true);
             lane6.SetActive(true);
-            
-            Renderer lane0Renderer = lane0.GetComponent<Renderer>();
-            Renderer lane6Renderer = lane6.GetComponent<Renderer>();
-            lane0Renderer.material = lane0Material;
-            lane6Renderer.material = lane6Material;
         }
     }
 

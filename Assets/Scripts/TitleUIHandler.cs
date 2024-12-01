@@ -20,6 +20,16 @@ public class TitleUIHandler : MonoBehaviour
         } else {
             highScoreText.text = "None Recorded";
         }
+        #if UNITY_WEBGL
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            Transform quitButton = GameObject.Find("Quit Button").transform;//Instance.gameOverMenu.transform.Find("Quit Button");
+            if (quitButton != null)
+            {
+                quitButton.gameObject.SetActive(false);
+            }
+        }
+        #endif
     }
     public void StartGame() {
         if (ScoreManager.Instance != null)
@@ -30,6 +40,7 @@ public class TitleUIHandler : MonoBehaviour
                 ScoreManager.Instance.currentPlayerName = "No Name";
             }
         }
+        AudioManager.Instance.StartAudio();
         SceneManager.LoadScene(1);
     }
 

@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public static bool isGameOver;
     public List<GameObject> obstaclePrefabs;
     private GameObject spawningObstacle;
-    private AudioSource audioSource;
+    //private AudioSource audioSource;
     
     private float elapsedTime = 0f; // Tracks time the player has been alive
 
@@ -146,17 +146,18 @@ public class GameManager : MonoBehaviour
             highscoreText.text = "None Recorded";
         }
         isGameOver = false;
-        audioSource = GetComponent<AudioSource>();
+        //audioSource = GetComponent<AudioSource>();
         Obstacle.verticleSpeed = -50f;
         MovingObstacle.xBoundary = 25;
         speedIncreaseInterval = 10f;
         numObstacleTypes = 1;
         numLanes = 5;
-        audioSource.Play();
+        //audioSource.Play();
+        AudioManager.Instance.StartAudio();
         StartCoroutine(SpawnObstacle());
     }
     public static void GameOver() {
-        Instance.StopMusic();
+        AudioManager.Instance.StopAudio();
         isGameOver = true;
         if (ScoreManager.Instance.currentPlayerScore > ScoreManager.Instance.highScorePlayerScore) {
             ScoreManager.Instance.SavePlayerData();
@@ -164,6 +165,16 @@ public class GameManager : MonoBehaviour
         }
         ScoreManager.Instance.currentPlayerScore = 0;
         Instance.gameOverMenu.gameObject.SetActive(true);
+        #if UNITY_WEBGL
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            Transform quitButton = Instance.gameOverMenu.transform.Find("Quit Button");
+            if (quitButton != null)
+            {
+                quitButton.gameObject.SetActive(false);
+            }
+        }
+        #endif
     }
     public void RestartGame() {
         SceneManager.LoadScene(1);
@@ -178,14 +189,6 @@ public class GameManager : MonoBehaviour
         #else
                 Application.Quit(); // original code to quit Unity player
         #endif
-    }
-
-    private void StopMusic()
-    {
-        if (audioSource.isPlaying)
-        {
-            audioSource.Stop();
-        }
     }
 
     private void UpdateTimer() {

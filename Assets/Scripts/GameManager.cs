@@ -152,6 +152,7 @@ public class GameManager : MonoBehaviour
         speedIncreaseInterval = 10f;
         numObstacleTypes = 1;
         numLanes = 5;
+        audioSource.Play();
         StartCoroutine(SpawnObstacle());
     }
     public static void GameOver() {

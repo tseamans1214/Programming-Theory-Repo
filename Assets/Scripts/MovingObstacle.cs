@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovingObstacle : Obstacle
+public class MovingObstacle : Obstacle // INHERITANCE
 {
     [SerializeField] private float horizontalSpeed;
     public static float xBoundary = 25;
@@ -14,7 +14,7 @@ public class MovingObstacle : Obstacle
             horizontalSpeed *= -1;
         }
     }
-    public override void Move() {
+    public override void Move() { // POLYMORPHISM
         transform.Translate(Vector3.forward * Time.deltaTime * verticleSpeed);
 
         float obstacleWidth = GetComponent<Renderer>().bounds.size.x;

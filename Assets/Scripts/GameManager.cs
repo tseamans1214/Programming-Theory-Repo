@@ -10,7 +10,7 @@ using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static GameManager Instance { get; private set; } // ENCAPSULATION
     public static bool isGameOver;
     public List<GameObject> obstaclePrefabs;
     private GameObject spawningObstacle;
@@ -207,7 +207,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private string FormatTime(float time)
+    private string FormatTime(float time) // ABSTRACTION
     {
         // Convert total seconds to hours, minutes, and seconds
         int hours = Mathf.FloorToInt(time / 3600);

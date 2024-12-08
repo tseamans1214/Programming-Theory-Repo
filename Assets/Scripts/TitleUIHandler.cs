@@ -52,6 +52,10 @@ public class TitleUIHandler : MonoBehaviour
         #endif
     }
 
+    public void GoToLeaderboard() {
+        SceneManager.LoadScene(2);
+    }
+
     private string FormatTime(float time)
     {
         // Convert total seconds to hours, minutes, and seconds

@@ -54,6 +54,7 @@ public class TitleUIHandler : MonoBehaviour
 
     public void GoToLeaderboard() {
         SceneManager.LoadScene(2);
+        //LeaderboardDB.FetchPlayerScores();
     }
 
     private string FormatTime(float time)

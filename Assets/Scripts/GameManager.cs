@@ -163,7 +163,9 @@ public class GameManager : MonoBehaviour
             ScoreManager.Instance.SavePlayerData();
             Instance.highscoreText.text = ScoreManager.Instance.highScorePlayerName + " : " + Instance.FormatTime(ScoreManager.Instance.highScorePlayerScore);
         }
-        LeaderboardDB.AddPlayerScore(ScoreManager.Instance.currentPlayerName, ScoreManager.Instance.currentPlayerScore);
+        ScoreManager.Instance.UploadScoreToLeaderboard();
+        //Instance.StartCoroutine(LeaderboardAPI.Instance.PostScore(ScoreManager.Instance.currentPlayerName, ScoreManager.Instance.currentPlayerScore));
+        //LeaderboardDB.AddPlayerScore(ScoreManager.Instance.currentPlayerName, ScoreManager.Instance.currentPlayerScore);
         ScoreManager.Instance.currentPlayerScore = 0;
         Instance.gameOverMenu.gameObject.SetActive(true);
         #if UNITY_WEBGL

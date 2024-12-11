@@ -16,8 +16,9 @@ public class ScoreManager : MonoBehaviour
     public string highScorePlayerName;
     public int highScorePlayerScore;
 
-    private string secretKey = Environment.GetEnvironmentVariable("SECRET_KEY") + "";
-    private string apiUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + "";
+    private string secretKey = "FKE9F_HNV9E9JFNG!_F-5IHMCNDITG69";
+    private string apiUrl = "https://cube-cruisin-backend.vercel.app/scores";
+    //private string apiUrl = Environment.GetEnvironmentVariable("BACKEND_URL") + "";
     private void Awake()
     {
         // To prevent multiple ScoreManagers from being created, destroy it if it already exists
@@ -153,6 +154,7 @@ public class ScoreManager : MonoBehaviour
 
     public IEnumerator GetScores(System.Action<List<PlayerScore>> onSuccess, System.Action<string> onError)
     {
+        Debug.Log(apiUrl);
         UnityWebRequest request = UnityWebRequest.Get(apiUrl);
         
         yield return request.SendWebRequest();

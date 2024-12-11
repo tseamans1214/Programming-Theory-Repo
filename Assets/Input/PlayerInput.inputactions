@@ -96,8 +96,72 @@
         {
             "name": "UI",
             "id": "cee4fcff-c945-4130-bca4-ef586016b283",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "IncrementDown",
+                    "type": "Button",
+                    "id": "164e35ee-f795-4061-9ac4-b232bf6149cf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "IncrementUp",
+                    "type": "Button",
+                    "id": "14049a92-96df-4145-86da-a4abf43eb3b4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "665b9fec-2312-4114-bd4b-b9f88c2b08c2",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "IncrementDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dd7dbb93-7e73-457d-acd8-1ede9ee8aab0",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "IncrementDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b5e0fb80-893f-4a76-a5f9-2a36d3e20850",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "IncrementUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0411f3d3-d917-478f-b8ed-4ce1916572fb",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "IncrementUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

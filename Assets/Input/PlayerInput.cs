@@ -118,8 +118,72 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             ""name"": ""UI"",
             ""id"": ""cee4fcff-c945-4130-bca4-ef586016b283"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""IncrementDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""164e35ee-f795-4061-9ac4-b232bf6149cf"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""IncrementUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""14049a92-96df-4145-86da-a4abf43eb3b4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""665b9fec-2312-4114-bd4b-b9f88c2b08c2"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""IncrementDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dd7dbb93-7e73-457d-acd8-1ede9ee8aab0"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""IncrementDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b5e0fb80-893f-4a76-a5f9-2a36d3e20850"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""IncrementUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0411f3d3-d917-478f-b8ed-4ce1916572fb"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IncrementUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -191,6 +255,8 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_MoveRight = m_Player.FindAction("MoveRight", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_IncrementDown = m_UI.FindAction("IncrementDown", throwIfNotFound: true);
+        m_UI_IncrementUp = m_UI.FindAction("IncrementUp", throwIfNotFound: true);
     }
 
     ~@PlayerInput()
@@ -312,10 +378,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     // UI
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
+    private readonly InputAction m_UI_IncrementDown;
+    private readonly InputAction m_UI_IncrementUp;
     public struct UIActions
     {
         private @PlayerInput m_Wrapper;
         public UIActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @IncrementDown => m_Wrapper.m_UI_IncrementDown;
+        public InputAction @IncrementUp => m_Wrapper.m_UI_IncrementUp;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -325,10 +395,22 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_UIActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_UIActionsCallbackInterfaces.Add(instance);
+            @IncrementDown.started += instance.OnIncrementDown;
+            @IncrementDown.performed += instance.OnIncrementDown;
+            @IncrementDown.canceled += instance.OnIncrementDown;
+            @IncrementUp.started += instance.OnIncrementUp;
+            @IncrementUp.performed += instance.OnIncrementUp;
+            @IncrementUp.canceled += instance.OnIncrementUp;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
         {
+            @IncrementDown.started -= instance.OnIncrementDown;
+            @IncrementDown.performed -= instance.OnIncrementDown;
+            @IncrementDown.canceled -= instance.OnIncrementDown;
+            @IncrementUp.started -= instance.OnIncrementUp;
+            @IncrementUp.performed -= instance.OnIncrementUp;
+            @IncrementUp.canceled -= instance.OnIncrementUp;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -398,5 +480,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     }
     public interface IUIActions
     {
+        void OnIncrementDown(InputAction.CallbackContext context);
+        void OnIncrementUp(InputAction.CallbackContext context);
     }
 }

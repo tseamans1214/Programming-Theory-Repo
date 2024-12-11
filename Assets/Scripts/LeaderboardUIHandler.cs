@@ -3,12 +3,42 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class LeaderboardUIHandler : MonoBehaviour
 {
     [SerializeField] private List<TextMeshProUGUI> leaderboardPlayerTexts;
     [SerializeField] private List<TextMeshProUGUI> leaderboardScoreTexts;
+    private int currentIndex = 0;
+    private List<PlayerScore> leaderboardScores;
+
+    private PlayerInput playerInput;
+
+    private void OnEnable()
+    {
+        // Initialize and enable the Input System
+        if (playerInput == null)
+        {
+            playerInput = new PlayerInput();
+        }
+        playerInput.UI.Enable();
+
+        // Subscribe to the "Move" actions
+        playerInput.UI.IncrementDown.performed += IncrementDown;
+        playerInput.UI.IncrementUp.performed += IncrementUp;
+    }
+
+    private void OnDisable()
+    {
+        if (playerInput != null)
+        {
+            playerInput.UI.IncrementDown.performed -= IncrementDown;
+            playerInput.UI.IncrementUp.performed -= IncrementUp;
+            playerInput.UI.Disable();
+        }
+    }
     void Start() {
+        currentIndex = 0;
         StartCoroutine(ScoreManager.Instance.GetScores(OnScoresReceived, OnScoresError));
         
     }
@@ -18,16 +48,20 @@ public class LeaderboardUIHandler : MonoBehaviour
 
     private void OnScoresReceived(List<PlayerScore> scores)
     {
+        leaderboardScores = scores;
+        PopulateLeaderboardScores();
+    }
+    private void PopulateLeaderboardScores() {
         var i=0;
-        foreach (var score in scores)
+        for (var j=currentIndex; j<leaderboardScores.Count && j<currentIndex+10; j++)
         {
-            leaderboardPlayerTexts[i].text = (i+1) + ". " + score.player;
-            leaderboardScoreTexts[i].text = FormatTime(score.score) + "";
+            leaderboardPlayerTexts[i].text = (j+1) + ". " + leaderboardScores[j].player;
+            leaderboardScoreTexts[i].text = FormatTime(leaderboardScores[j].score) + "";
             i++;
             
         }
         while (i < 10) {
-                leaderboardPlayerTexts[i].text = (i+1) + ". " + "NA";
+                leaderboardPlayerTexts[i].text = (currentIndex+i+1) + ". " + "NA";
                 leaderboardScoreTexts[i].text = "00:00:00";
                 i++;
         }
@@ -50,5 +84,28 @@ public class LeaderboardUIHandler : MonoBehaviour
 
         // Return a formatted string in HH:MM:SS
         return $"{hours:D2}:{minutes:D2}:{seconds:D2}";
+    }
+
+    public void IncrementLeaderboardIndex(int incrementAmount) {
+        if ((incrementAmount < 0 && currentIndex + incrementAmount >= 0) || 
+            (incrementAmount > 0 && currentIndex + incrementAmount < 100)) {
+            currentIndex += incrementAmount;
+        }
+        PopulateLeaderboardScores();
+    }
+    // Called when the input system triggers
+    public void IncrementDown(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            IncrementLeaderboardIndex(-10);
+        }
+    }
+    public void IncrementUp(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            IncrementLeaderboardIndex(10);
+        }
     }
 }

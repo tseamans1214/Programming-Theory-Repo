@@ -6,7 +6,8 @@ using TMPro;
 
 public class LeaderboardUIHandler : MonoBehaviour
 {
-    [SerializeField] private List<TextMeshProUGUI> leaderboardTexts;
+    [SerializeField] private List<TextMeshProUGUI> leaderboardPlayerTexts;
+    [SerializeField] private List<TextMeshProUGUI> leaderboardScoreTexts;
     void Start() {
         StartCoroutine(ScoreManager.Instance.GetScores(OnScoresReceived, OnScoresError));
         
@@ -20,12 +21,14 @@ public class LeaderboardUIHandler : MonoBehaviour
         var i=0;
         foreach (var score in scores)
         {
-            leaderboardTexts[i].text = (i+1) + ". " + score.player + " : " + FormatTime(score.score);
+            leaderboardPlayerTexts[i].text = (i+1) + ". " + score.player;
+            leaderboardScoreTexts[i].text = FormatTime(score.score) + "";
             i++;
             
         }
         while (i < 10) {
-                leaderboardTexts[i].text = (i+1) + ". " + "NA";
+                leaderboardPlayerTexts[i].text = (i+1) + ". " + "NA";
+                leaderboardScoreTexts[i].text = "00:00:00";
                 i++;
         }
     }

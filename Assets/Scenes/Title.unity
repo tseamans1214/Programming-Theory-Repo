@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 362397758}
   - component: {fileID: 362397757}
   m_Layer: 5
-  m_Name: Best Score Panel
+  m_Name: Best Time Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1615,7 +1615,7 @@ GameObject:
   m_Component:
   - component: {fileID: 782628376}
   m_Layer: 5
-  m_Name: Best Score Section
+  m_Name: Best Time Section
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1640,7 +1640,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 271, y: -101}
+  m_AnchoredPosition: {x: 271, y: -160}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &844106583
@@ -3813,7 +3813,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 63ec225611079a44aa7921995cb6e101, type: 3}
+  m_Texture: {fileID: 2800000, guid: fdd46fbc1b23aec4eb6a4c3573cbdc92, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0

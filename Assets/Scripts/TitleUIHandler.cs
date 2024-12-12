@@ -56,6 +56,12 @@ public class TitleUIHandler : MonoBehaviour
         SceneManager.LoadScene(2);
         //LeaderboardDB.FetchPlayerScores();
     }
+    public void GoToDirections() {
+        SceneManager.LoadScene(3);
+    }
+    public void GoToCredits() {
+        SceneManager.LoadScene(4);
+    }
 
     private string FormatTime(float time)
     {

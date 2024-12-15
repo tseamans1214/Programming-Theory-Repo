@@ -2028,7 +2028,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 275182369}
         m_TargetAssemblyTypeName: TitleUIHandler, Assembly-CSharp
-        m_MethodName: GoToDirections
+        m_MethodName: GoToCredits
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

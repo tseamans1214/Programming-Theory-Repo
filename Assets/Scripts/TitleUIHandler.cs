@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using mk.profanity;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,9 +12,13 @@ public class TitleUIHandler : MonoBehaviour
 {
     [SerializeField] private TMP_InputField playerNameField;
     [SerializeField] private TextMeshProUGUI highScoreText;
+    [SerializeField] private GameObject profanityPanel;
+
+    ProfanityFilter profanityFilter;
 
     void Start()
     {
+        profanityFilter = new ProfanityFilter();
         ScoreManager.Instance.LoadPlayerData();
         if (ScoreManager.Instance.highScorePlayerScore > 0) {
             highScoreText.text = ScoreManager.Instance.highScorePlayerName + " : " + FormatTime(ScoreManager.Instance.highScorePlayerScore);
@@ -72,5 +77,14 @@ public class TitleUIHandler : MonoBehaviour
 
         // Return a formatted string in HH:MM:SS
         return $"{hours:D2}:{minutes:D2}:{seconds:D2}";
+    }
+    public void CheckNameForProfanity() {
+        bool containsProfanity = profanityFilter.ContainsProfanity(playerNameField.text); 
+        if (containsProfanity) {
+            profanityPanel.SetActive(true);
+           
+        } else {
+            StartGame();
+        }
     }
 }

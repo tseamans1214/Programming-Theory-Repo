@@ -64,16 +64,18 @@ public class GameManager : MonoBehaviour
             speedIncreaseInterval += 10;
         }
         // Increase the number of block types every 30 seconds
-        if (elapsedTime >= 30) {
+        if (elapsedTime >= 60) {
             // Add 2 new lanes
             AddLanes();
             numObstacleTypes = 4;
-            spawnRate = 0.5f;
-        } else if (elapsedTime >= 20) {
+            spawnRate = 0.4f;
+        } else if (elapsedTime >= 40) {
             numObstacleTypes = 3;
-        } else if (elapsedTime >= 10) {
+            spawnRate = 0.6f;
+        } else if (elapsedTime >= 20) {
             
             numObstacleTypes = 2;
+            spawnRate = 0.8f;
         }
     }
     void AddLanes() {
@@ -89,8 +91,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator SpawnObstacle() {
         while (isGameOver == false) {
-            // Wait for x seconds to spwawn
-            yield return new WaitForSeconds(spawnRate);
+            float randomSpawnRate = Random.Range(spawnRate, spawnRate + 1.0f);
+            // Wait for x seconds to spawn
+            yield return new WaitForSeconds(randomSpawnRate);
 
             // Randomly select an obstacle prefab
             int randomIndex = Random.Range(0, numObstacleTypes);

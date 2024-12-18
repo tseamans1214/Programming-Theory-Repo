@@ -828,6 +828,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac6439c202b799e41ac6295f381e60b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playlist:
+  - {fileID: 8300000, guid: c6540ebf684ecd74bb5ff36b8ff4c124, type: 3}
+  - {fileID: 8300000, guid: cee44225a8da40247a94305aadfd249d, type: 3}
+  - {fileID: 8300000, guid: d249b98e927922c4b90dfb16155be4fe, type: 3}
 --- !u!4 &616648872
 Transform:
   m_ObjectHideFlags: 0
@@ -855,9 +859,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: c6540ebf684ecd74bb5ff36b8ff4c124, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

@@ -55,7 +55,7 @@ public class AudioManager : MonoBehaviour
     {
         if (audioSource != null && !audioSource.isPlaying)
         {
-            PlaySong(1);
+            PlaySong(0);
         }
     }
     public void StopAudio() {

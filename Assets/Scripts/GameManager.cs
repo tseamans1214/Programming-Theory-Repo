@@ -73,7 +73,6 @@ public class GameManager : MonoBehaviour
             numObstacleTypes = 3;
             spawnRate = 0.6f;
         } else if (elapsedTime >= 20) {
-            
             numObstacleTypes = 2;
             spawnRate = 0.8f;
         }

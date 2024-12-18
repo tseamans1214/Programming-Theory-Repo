@@ -95,7 +95,6 @@ public class ScoreManager : MonoBehaviour
         ScorePayload payload = new ScorePayload(player, score, hash);
 
         string jsonPayload = JsonUtility.ToJson(payload);
-        Debug.Log($"Payload: {jsonPayload}");
 
         UnityWebRequest request = new UnityWebRequest(apiUrl, "POST");
         byte[] jsonToSend = Encoding.UTF8.GetBytes(jsonPayload);
@@ -128,14 +127,6 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    // Get Scores
-    // [System.Serializable]
-    // public class PlayerScore
-    // {
-    //     public string player;
-    //     public int score;
-    // }
-
     public static class JsonHelper
     {
         public static T[] FromJson<T>(string json)
@@ -154,7 +145,6 @@ public class ScoreManager : MonoBehaviour
 
     public IEnumerator GetScores(System.Action<List<PlayerScore>> onSuccess, System.Action<string> onError)
     {
-        Debug.Log(apiUrl);
         UnityWebRequest request = UnityWebRequest.Get(apiUrl);
         
         yield return request.SendWebRequest();
@@ -165,7 +155,6 @@ public class ScoreManager : MonoBehaviour
             {
                 // Deserialize JSON response
                 string jsonResponse = request.downloadHandler.text;
-                Debug.Log($"Response: {jsonResponse}");
                 PlayerScore[] scores = JsonHelper.FromJson<PlayerScore>(jsonResponse);
                 onSuccess(new List<PlayerScore>(scores));
             }

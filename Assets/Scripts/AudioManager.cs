@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
     private AudioSource audioSource;
     public List<AudioClip> playlist; // List of audio clips for the playlist
-    private int currentSongIndex = 0; // Index of the current song
+    public int currentSongIndex = 0; // Index of the current song
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    void NextSong()
+    public void NextSong()
     {
         currentSongIndex = (currentSongIndex + 1) % playlist.Count; // Loop back to the first song
         PlaySong(currentSongIndex);

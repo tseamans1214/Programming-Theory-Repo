@@ -769,14 +769,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Developer: KernelTommy
-
-
-    Music: Matthew Pablo, matthewpablo.com
-
-
-    Space
-    Texture: alpharats, opengameart.org/users/alpharats'
+  m_text: "Developer: KernelTommy\n\nMusic: \nn-Dimensions-(Main-Theme) by: Matthew
+    Pablo, matthewpablo.com\n12v3 by:Centurion_of_war\nRetro Game Music Pack] Level
+    3 by Juhani Junkala\n\nSpace Texture: alpharats, opengameart.org/users/alpharats"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -803,8 +798,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
-  m_fontSizeBase: 40
+  m_fontSize: 28
+  m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -883,6 +878,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac6439c202b799e41ac6295f381e60b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playlist: []
+  currentSongIndex: 0
 --- !u!4 &616648872
 Transform:
   m_ObjectHideFlags: 0

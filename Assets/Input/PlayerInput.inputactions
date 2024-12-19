@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "NextSong",
+                    "type": "Button",
+                    "id": "4e23978e-57a1-490f-9eff-8026b14a3610",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -90,6 +99,17 @@
                     "action": "MoveRight",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dc9bb76d-382b-423d-bcb2-3c6c1601e37a",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "NextSong",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -110,6 +130,15 @@
                     "name": "IncrementUp",
                     "type": "Button",
                     "id": "14049a92-96df-4145-86da-a4abf43eb3b4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "New action",
+                    "type": "Button",
+                    "id": "825cd065-5e73-4a2b-be70-3fd785900a3b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -158,6 +187,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "IncrementUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e5e18741-4218-4922-8b1f-c04779f272ed",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

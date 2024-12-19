@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
         // Subscribe to the "Move" actions
         playerInput.Player.MoveLeft.performed += MoveLeft;
         playerInput.Player.MoveRight.performed += MoveRight;
+        playerInput.Player.NextSong.performed += NextSong;
     }
 
     private void OnDisable()
@@ -38,6 +39,7 @@ public class Player : MonoBehaviour
         {
             playerInput.Player.MoveLeft.performed -= MoveLeft;
             playerInput.Player.MoveRight.performed -= MoveRight;
+            playerInput.Player.NextSong.performed -= NextSong;
             playerInput.Player.Disable();
         }
     }
@@ -113,5 +115,10 @@ public class Player : MonoBehaviour
             GetComponent<MeshRenderer>().enabled = false;
 
         }
+    }
+
+    // Player Menu button shortcuts
+    public void NextSong(InputAction.CallbackContext ctx) {
+        AudioManager.Instance.NextSong();
     }
 }

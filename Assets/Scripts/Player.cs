@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
         AudioManager.Instance.NextSong();
     }
     public void MuteAudio(InputAction.CallbackContext ctx) {
-        GlobalAudioMuteToggle muteToggle = GameObject.Find("GlobalAudioMuteToggle").GetComponent<GlobalAudioMuteToggle>();
+        GlobalAudioControls muteToggle = GameObject.Find("GlobalAudioControls").GetComponent<GlobalAudioControls>();
         muteToggle.ToggleMuteAll();
     }
     public void RestartGame(InputAction.CallbackContext ctx) {

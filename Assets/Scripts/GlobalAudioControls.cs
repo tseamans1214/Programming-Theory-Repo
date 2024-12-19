@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GlobalAudioMuteToggle : MonoBehaviour
+public class GlobalAudioControls : MonoBehaviour
 {
     private AudioSource[] audioSources;
     private AudioSource playerSource;

@@ -22,7 +22,6 @@ public class SongNameDisplay : MonoBehaviour
         authors.Add("Centurion_of_war");
         authors.Add("Juhani Junkala");
         ShowSongName(AudioManager.Instance.playlist[currentSongIndex].name, authors[currentSongIndex]);
-        //songNameText.text = "Now playing... " + AudioManager.Instance.playlist[currentSongIndex].name;
     }
 
     // Update is called once per frame
@@ -31,8 +30,6 @@ public class SongNameDisplay : MonoBehaviour
         if (currentSongIndex != AudioManager.Instance.currentSongIndex) {
             currentSongIndex = AudioManager.Instance.currentSongIndex;
             ShowSongName(AudioManager.Instance.playlist[currentSongIndex].name, authors[currentSongIndex]);
-            //songNameText.text = AudioManager.Instance.playlist[currentSongIndex].name;
-            // Method to make text appear and vanish
         }
     }
 

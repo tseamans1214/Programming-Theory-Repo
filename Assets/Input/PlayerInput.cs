@@ -62,6 +62,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RestartGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""36670737-a6eb-4e93-a3ab-7010a6499573"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -150,6 +159,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""MuteAudio"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ba507930-8e30-4e4e-8085-685f37118d29"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""RestartGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -315,6 +335,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_MoveRight = m_Player.FindAction("MoveRight", throwIfNotFound: true);
         m_Player_NextSong = m_Player.FindAction("NextSong", throwIfNotFound: true);
         m_Player_MuteAudio = m_Player.FindAction("MuteAudio", throwIfNotFound: true);
+        m_Player_RestartGame = m_Player.FindAction("RestartGame", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_IncrementDown = m_UI.FindAction("IncrementDown", throwIfNotFound: true);
@@ -391,6 +412,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MoveRight;
     private readonly InputAction m_Player_NextSong;
     private readonly InputAction m_Player_MuteAudio;
+    private readonly InputAction m_Player_RestartGame;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -399,6 +421,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @MoveRight => m_Wrapper.m_Player_MoveRight;
         public InputAction @NextSong => m_Wrapper.m_Player_NextSong;
         public InputAction @MuteAudio => m_Wrapper.m_Player_MuteAudio;
+        public InputAction @RestartGame => m_Wrapper.m_Player_RestartGame;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -420,6 +443,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @MuteAudio.started += instance.OnMuteAudio;
             @MuteAudio.performed += instance.OnMuteAudio;
             @MuteAudio.canceled += instance.OnMuteAudio;
+            @RestartGame.started += instance.OnRestartGame;
+            @RestartGame.performed += instance.OnRestartGame;
+            @RestartGame.canceled += instance.OnRestartGame;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -436,6 +462,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @MuteAudio.started -= instance.OnMuteAudio;
             @MuteAudio.performed -= instance.OnMuteAudio;
             @MuteAudio.canceled -= instance.OnMuteAudio;
+            @RestartGame.started -= instance.OnRestartGame;
+            @RestartGame.performed -= instance.OnRestartGame;
+            @RestartGame.canceled -= instance.OnRestartGame;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -566,6 +595,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnMoveRight(InputAction.CallbackContext context);
         void OnNextSong(InputAction.CallbackContext context);
         void OnMuteAudio(InputAction.CallbackContext context);
+        void OnRestartGame(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

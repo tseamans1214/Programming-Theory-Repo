@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
         playerInput.Player.MoveRight.performed += MoveRight;
         playerInput.Player.NextSong.performed += NextSong;
         playerInput.Player.MuteAudio.performed += MuteAudio;
+        playerInput.Player.RestartGame.performed += RestartGame;
     }
 
     private void OnDisable()
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour
             playerInput.Player.MoveRight.performed -= MoveRight;
             playerInput.Player.NextSong.performed -= NextSong;
             playerInput.Player.MuteAudio.performed -= MuteAudio;
+            playerInput.Player.RestartGame.performed -= RestartGame;
             playerInput.Player.Disable();
         }
     }
@@ -126,5 +128,9 @@ public class Player : MonoBehaviour
     public void MuteAudio(InputAction.CallbackContext ctx) {
         GlobalAudioMuteToggle muteToggle = GameObject.Find("GlobalAudioMuteToggle").GetComponent<GlobalAudioMuteToggle>();
         muteToggle.ToggleMuteAll();
+    }
+    public void RestartGame(InputAction.CallbackContext ctx) {
+        AudioManager.Instance.StopAudio();
+        GameManager.Instance.RestartGame();   
     }
 }

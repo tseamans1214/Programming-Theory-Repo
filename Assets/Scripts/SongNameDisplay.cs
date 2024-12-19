@@ -17,7 +17,6 @@ public class SongNameDisplay : MonoBehaviour
     void Start()
     {
         currentSongIndex = AudioManager.Instance.currentSongIndex;
-        Debug.Log(currentSongIndex);
         authors = new List<string>();
         authors.Add("Matthew Pablo");
         authors.Add("Centurion_of_war");

@@ -55,12 +55,19 @@ public class AudioManager : MonoBehaviour
     {
         if (audioSource != null && !audioSource.isPlaying)
         {
-            PlaySong(0);
+            currentSongIndex = 0;
+            PlaySong(currentSongIndex);
         }
     }
     public void StopAudio() {
          if (audioSource != null) {
             audioSource.Stop();
         }
+    }
+    public void ToggleMute() {
+        audioSource.mute = !audioSource.mute;
+    }
+    public bool isMuted() {
+        return audioSource.mute;
     }
 }

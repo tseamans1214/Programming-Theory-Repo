@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
         playerInput.Player.MoveLeft.performed += MoveLeft;
         playerInput.Player.MoveRight.performed += MoveRight;
         playerInput.Player.NextSong.performed += NextSong;
+        playerInput.Player.MuteAudio.performed += MuteAudio;
     }
 
     private void OnDisable()
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
             playerInput.Player.MoveLeft.performed -= MoveLeft;
             playerInput.Player.MoveRight.performed -= MoveRight;
             playerInput.Player.NextSong.performed -= NextSong;
+            playerInput.Player.MuteAudio.performed -= MuteAudio;
             playerInput.Player.Disable();
         }
     }
@@ -120,5 +122,9 @@ public class Player : MonoBehaviour
     // Player Menu button shortcuts
     public void NextSong(InputAction.CallbackContext ctx) {
         AudioManager.Instance.NextSong();
+    }
+    public void MuteAudio(InputAction.CallbackContext ctx) {
+        GlobalAudioMuteToggle muteToggle = GameObject.Find("GlobalAudioMuteToggle").GetComponent<GlobalAudioMuteToggle>();
+        muteToggle.ToggleMuteAll();
     }
 }

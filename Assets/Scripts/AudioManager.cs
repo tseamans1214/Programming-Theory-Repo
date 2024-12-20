@@ -23,6 +23,11 @@ public class AudioManager : MonoBehaviour
 
     private void Start() {
         audioSource = GetComponent<AudioSource>();
+        foreach (var song in playlist)
+        {
+            // Accessing the clip ensures it's loaded into memory
+            Debug.Log($"Preloading: {song.name}");
+        }
     }
 
     void Update()

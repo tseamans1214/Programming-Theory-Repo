@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     public static bool isGameOver;
     public List<GameObject> obstaclePrefabs;
     private GameObject spawningObstacle;
-    //private AudioSource audioSource;
     
     private float elapsedTime = 0f; // Tracks time the player has been alive
 
@@ -68,7 +67,6 @@ public class GameManager : MonoBehaviour
         // Increase speed by 1 every 10 seconds
         if (elapsedTime > speedIncreaseInterval) {
             Obstacle.verticleSpeed += -4;
-            Debug.Log("Obstacle speed set to: " + Obstacle.verticleSpeed);
             speedIncreaseInterval += 10;
 
             // Increase the number of block types every 30 seconds
@@ -235,8 +233,9 @@ public class GameManager : MonoBehaviour
         if (spawningIndex >= 4) {
             spawningIndex -= 4;
         }
-        float obstacleWidth = obstacle.GetComponent<Renderer>().bounds.size.x;
         // Get random number for starting lane position
+        //  Subtracts the index from the max because it accounts for the size of the obstacle
+        //  so it doesn't cross the edge of the final lane
         int randomNum;
         if (numLanes == 5) {
             randomNum = Random.Range(-2,3-spawningIndex);
@@ -244,18 +243,12 @@ public class GameManager : MonoBehaviour
             randomNum = Random.Range(-3,4-spawningIndex);
         }
 
-        // Change offset based on size of block
-        int offset;
-        if (spawningIndex == 1) {
-            offset = 5;
-        }
-        else if (spawningIndex == 2) {
-            offset = 10;
-        } else if (spawningIndex == 3) {
-            offset = 15;
-        } else {
-            offset = 0;
-        }
+        // Change offset based on size of block (spawningIndex determines which size block is used)
+        // Blue     | index: 0| offset: 0|
+        // Green    | index: 1| offset: 5|
+        // Red      | index: 2| offset: 10|
+        // Purple   | index: 3| offset: 15|
+        int offset = spawningIndex * 5;
 
         Vector3 randomPos = new Vector3((10 * randomNum) + offset , 83.04436f, -700);
 
@@ -271,29 +264,30 @@ public class GameManager : MonoBehaviour
             highscoreText.text = "None Recorded";
         }
         isGameOver = false;
-        //audioSource = GetComponent<AudioSource>();
         Obstacle.verticleSpeed = -50f;
         MovingObstacle.xBoundary = 25;
         speedIncreaseInterval = 10f;
         numObstacleTypes = 1;
         numLanes = 5;
         allowMovingObstacles = true;
-        //audioSource.Play();
         AudioManager.Instance.StartAudio();
         StartCoroutine(SpawnObstacle());
     }
     public static void GameOver() {
         AudioManager.Instance.StopAudio();
         isGameOver = true;
+
+        // Save player score locally
         if (ScoreManager.Instance.currentPlayerScore > ScoreManager.Instance.highScorePlayerScore) {
             ScoreManager.Instance.SavePlayerData();
             Instance.highscoreText.text = ScoreManager.Instance.highScorePlayerName + " : " + Instance.FormatTime(ScoreManager.Instance.highScorePlayerScore);
         }
+        // Upload score to online leaderboard
         ScoreManager.Instance.UploadScoreToLeaderboard();
-        //Instance.StartCoroutine(LeaderboardAPI.Instance.PostScore(ScoreManager.Instance.currentPlayerName, ScoreManager.Instance.currentPlayerScore));
-        //LeaderboardDB.AddPlayerScore(ScoreManager.Instance.currentPlayerName, ScoreManager.Instance.currentPlayerScore);
+        // Reset score
         ScoreManager.Instance.currentPlayerScore = 0;
         Instance.gameOverMenu.gameObject.SetActive(true);
+        // Don't show quit button if played in a web browser
         #if UNITY_WEBGL
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {

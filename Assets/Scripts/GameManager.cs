@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     public GameObject lane0;
     public GameObject lane6;
     private Player player;
+    public ObjectPooler objectPooler;
 
     void Awake() {
         StartGame();
@@ -52,14 +53,7 @@ public class GameManager : MonoBehaviour
             spawningObstacle = obstaclePrefabs[0];
         }
         player = GameObject.Find("Player").GetComponent<Player>();
-        if (player != null)
-        {
-            Debug.Log("Player component found.");
-        }
-        else
-        {
-            Debug.LogError("Player component not found!");
-        }
+        objectPooler = GameObject.Find("ObjectPooler").GetComponent<ObjectPooler>();
     }
 
     // Update is called once per frame
@@ -121,7 +115,8 @@ public class GameManager : MonoBehaviour
         foreach (Obstacle obstacle in obstacles) {
             if (obstacle.GetType() != typeof(ScrollingBackground))
             {
-                Destroy(obstacle.gameObject); // Remove the object
+                //Destroy(obstacle.gameObject); // Remove the object
+                obstacle.gameObject.SetActive(false);
             }
         }
     }
@@ -194,7 +189,8 @@ public class GameManager : MonoBehaviour
                 }
             }
             spawningObstacle = obstaclePrefabs[randomIndex];
-            Instantiate(spawningObstacle, GenerateSpawnPosition(spawningObstacle, randomIndex), spawningObstacle.transform.rotation);
+            objectPooler.SpawnFromPool(spawningObstacle.name, GenerateSpawnPosition(spawningObstacle, randomIndex), spawningObstacle.transform.rotation);
+            //Instantiate(spawningObstacle, GenerateSpawnPosition(spawningObstacle, randomIndex), spawningObstacle.transform.rotation);
         }
     }
     int GetRandomObstacle() {

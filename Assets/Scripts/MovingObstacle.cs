@@ -25,7 +25,8 @@ public class MovingObstacle : Obstacle // INHERITANCE
         transform.Translate(Vector3.right * Time.deltaTime * horizontalSpeed);
 
         if (transform.position.z < -1000) {
-            Destroy(gameObject);
+            //Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

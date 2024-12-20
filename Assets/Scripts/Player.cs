@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -98,7 +99,7 @@ public class Player : MonoBehaviour
         
     }
 
-    void RotateAndMove(Vector3 rotationDirection, Vector3 moveDirection)
+    public void RotateAndMove(Vector3 rotationDirection, Vector3 moveDirection)
     {
         // Update target rotation
         targetRotation *= Quaternion.Euler(rotationDirection * 90);

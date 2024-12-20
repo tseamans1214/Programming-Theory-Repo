@@ -26,13 +26,16 @@ public class GameManager : MonoBehaviour
 
     // Variables for increasting difficulty
     [SerializeField] private float spawnRate = 1.0f;
+    [SerializeField] private float spawnRateRange = 1.0f;
     [SerializeField] private float speedIncreaseInterval = 10f;
     private int numObstacleTypes = 1;
+    private bool allowMovingObstacles = true;
 
     // Variables for adding new lanes
     public static int numLanes = 5;
     public GameObject lane0;
     public GameObject lane6;
+    private Player player;
 
     void Awake() {
         StartGame();
@@ -47,20 +50,87 @@ public class GameManager : MonoBehaviour
         if (obstaclePrefabs != null && obstaclePrefabs.Count > 0)
         {
             spawningObstacle = obstaclePrefabs[0];
-        } 
+        }
+        player = GameObject.Find("Player").GetComponent<Player>();
+        if (player != null)
+        {
+            Debug.Log("Player component found.");
+        }
+        else
+        {
+            Debug.LogError("Player component not found!");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdateTimer();
-        UpdateDifficulty();
+        //UpdateDifficulty();
+        TestDifficulty();
+    }
+    void TestDifficulty() {
+        // Speed starts at -50
+        // Increase speed by 1 every 10 seconds
+        if (elapsedTime > speedIncreaseInterval) {
+            Obstacle.verticleSpeed += -4;
+            Debug.Log("Obstacle speed set to: " + Obstacle.verticleSpeed);
+            speedIncreaseInterval += 10;
+
+            // Increase the number of block types every 30 seconds
+            if (speedIncreaseInterval == 140) {
+                AddLanes();
+                numObstacleTypes = 4;
+                spawnRate = 0.3f;
+            } else if (speedIncreaseInterval == 100) {
+                RemoveLanes();
+                numObstacleTypes = 3;
+                spawnRate = 0.4f;
+            } else if (speedIncreaseInterval == 80) {
+                allowMovingObstacles = true;
+                numObstacleTypes = 4;
+                spawnRate = 0.3f;
+                spawnRateRange = 0.3f;
+                Obstacle.verticleSpeed = -100;
+            } else if (speedIncreaseInterval == 60) {
+                allowMovingObstacles = false;
+                ClearObstacles();
+                numObstacleTypes = 2;
+                spawnRate = 0.1f;
+                spawnRateRange = 0.2f;
+                Obstacle.verticleSpeed = -150;
+            } else if (speedIncreaseInterval == 40) {
+                AddLanes();
+                numObstacleTypes = 4;
+                spawnRate = 0.4f;
+                spawnRateRange = 0.4f;
+            } else if (speedIncreaseInterval == 30) {
+                numObstacleTypes = 3;
+                spawnRate = 0.6f;
+                spawnRateRange = 0.6f;
+            } else if (speedIncreaseInterval == 20) {
+                numObstacleTypes = 2;
+                spawnRate = 0.8f;
+                spawnRateRange = 0.8f;
+            }
+        }
+        
+    }
+    void ClearObstacles() {
+        Obstacle[] obstacles = FindObjectsOfType<Obstacle>();
+        foreach (Obstacle obstacle in obstacles) {
+            if (obstacle.GetType() != typeof(ScrollingBackground))
+            {
+                Destroy(obstacle.gameObject); // Remove the object
+            }
+        }
     }
 
     void UpdateDifficulty() {
         // Increase speed by 1 every 10 seconds
         if (elapsedTime > speedIncreaseInterval) {
             Obstacle.verticleSpeed += -2;
+            Debug.Log("Obstacle speed set to: " + Obstacle.verticleSpeed);
             speedIncreaseInterval += 10;
         }
         // Increase the number of block types every 30 seconds
@@ -87,25 +157,82 @@ public class GameManager : MonoBehaviour
             lane6.SetActive(true);
         }
     }
+    void RemoveLanes() {
+        if (numLanes != 5) {
+            ClearObstacles();
+            MovingObstacle.xBoundary = 25;
+            numLanes = 5;
+            if (Player.currentLane == 1) { // If player is on the far left lane, move them right
+                player.RotateAndMove(Vector3.back, Vector3.right);
+                Player.currentLane = 1;
+            } else if (Player.currentLane == 7) { // If player is on the far right lane, move them left
+                player.RotateAndMove(Vector3.forward, Vector3.left);
+                Player.currentLane = 5;
+            } else {
+                Player.currentLane--;
+            }
+            lane0.SetActive(false);
+            lane6.SetActive(false);
+        }
+    }
 
     IEnumerator SpawnObstacle() {
         while (isGameOver == false) {
-            float randomSpawnRate = Random.Range(spawnRate, spawnRate + 1.0f);
+            float randomSpawnRate = Random.Range(spawnRate, spawnRate + spawnRateRange);
             // Wait for x seconds to spawn
             yield return new WaitForSeconds(randomSpawnRate);
 
             // Randomly select an obstacle prefab
-            int randomIndex = Random.Range(0, numObstacleTypes);
+            // int randomIndex = Random.Range(0, numObstacleTypes);
+            int randomIndex = GetRandomObstacle();
 
             // Randomly make it a moving object
-            int randomChanceToMove = Random.Range(0, 2);
-            if (randomChanceToMove == 0) {
-                randomIndex += 4;
+            if (allowMovingObstacles) {
+                int randomChanceToMove = Random.Range(0, 4);
+                if (randomChanceToMove == 0) {
+                    randomIndex += 4;
+                }
             }
             spawningObstacle = obstaclePrefabs[randomIndex];
             Instantiate(spawningObstacle, GenerateSpawnPosition(spawningObstacle, randomIndex), spawningObstacle.transform.rotation);
         }
     }
+    int GetRandomObstacle() {
+        // Odds based on numObstacleTypes value
+        // 1: 100
+        // 2: 50|50
+        // 3: 40|40|20
+        // 4: 30|30|20|20
+        switch(numObstacleTypes) {
+            case 1: 
+                return 0;
+            case 2:
+                return Random.Range(0, numObstacleTypes);
+            case 3:
+                int randomNum = Random.Range(0, 99);
+                if (randomNum <= 40) {
+                    return 0;
+                } else if (randomNum <= 80) {
+                    return 1;
+                } else {
+                    return 2;
+                }
+            case 4:
+                randomNum = Random.Range(0, 99);
+                if (randomNum <= 30) {
+                    return 0;
+                } else if (randomNum <= 60) {
+                    return 1;
+                } else if (randomNum <= 80) {
+                    return 2;
+                } else {
+                    return 3;
+                }
+            default:
+                return 0;
+        }
+    }
+    
 
     private Vector3 GenerateSpawnPosition(GameObject obstacle, int spawningIndex) {
         // If index is >=4, it is a moving block so substract for to get the correct starting index for size of block
@@ -154,6 +281,7 @@ public class GameManager : MonoBehaviour
         speedIncreaseInterval = 10f;
         numObstacleTypes = 1;
         numLanes = 5;
+        allowMovingObstacles = true;
         //audioSource.Play();
         AudioManager.Instance.StartAudio();
         StartCoroutine(SpawnObstacle());

@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float spawnRate = 1.0f;
     [SerializeField] private float spawnRateRange = 1.0f;
     [SerializeField] private float speedIncreaseInterval = 10f;
+    [SerializeField] private float difficultyIncreaseInterval = 10f;
     private int numObstacleTypes = 1;
     private bool allowMovingObstacles = true;
 
@@ -59,8 +60,59 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpdateTimer();
-        //UpdateDifficulty();
-        TestDifficulty();
+        UpdateDifficulty();
+        //TestDifficulty();
+    }
+    void UpdateDifficulty() {
+        // Speed starts at -50
+        // Increase speed by 2 every 10 seconds
+        if (elapsedTime > speedIncreaseInterval) {
+            Obstacle.verticleSpeed += -2;
+            speedIncreaseInterval += 10;
+        }
+        // Every 20 seconds, difficulty increases
+            //  numObstacles++ // If not already at 4 obstacles
+            //  spawnRate -= 0.2f // min 0.3f
+            //  spawnRateRange -= 0.8f // min 0.3f
+            // When numObstacles == 4, starts speed round
+            //  allowMovingObstacles = false;
+            //  ClearObstacles();
+            //  numObstacleTypes = 2;
+            //  spawnRate = 0.1f;
+            //  spawnRateRange = 0.2f;
+            //  Obstacle.verticleSpeed = -150;
+            // When next increase comes, if allowMovingObstacles = false
+            //  RemoveLanes();
+            //  numObstacleTypes = 3;
+            //  spawnRate = 0.4f;
+        if (elapsedTime > difficultyIncreaseInterval) {
+            if (numObstacleTypes != 4) {
+                numObstacleTypes++; // If not already at 4 obstacles
+                if (numObstacleTypes == 4) { // Add lanes if obstacles equal to 4
+                    AddLanes();
+                }
+                if (allowMovingObstacles == false) { // Round after speed round
+                    Obstacle.verticleSpeed += 120;
+                    RemoveLanes();
+                    allowMovingObstacles = true;
+                    numObstacleTypes = 3;
+                    spawnRate = 0.4f;
+                    spawnRateRange= 0.4f;
+                }
+                else if (spawnRate >= 0.4f) { // If normal round, increase spawn rate
+                    spawnRate -= 0.1f; // min 0.2f
+                    spawnRateRange -= 0.1f; // min 0.2f
+                }
+            } else { // Speed round
+                allowMovingObstacles = false;
+                ClearObstacles();
+                numObstacleTypes = 2;
+                spawnRate = 0.2f;
+                spawnRateRange = 0.2f;
+                Obstacle.verticleSpeed += -150;
+            }
+            difficultyIncreaseInterval += 20;
+        }
     }
     void TestDifficulty() {
         // Speed starts at -50
@@ -108,18 +160,7 @@ public class GameManager : MonoBehaviour
         }
         
     }
-    void ClearObstacles() {
-        Obstacle[] obstacles = FindObjectsOfType<Obstacle>();
-        foreach (Obstacle obstacle in obstacles) {
-            if (obstacle.GetType() != typeof(ScrollingBackground))
-            {
-                //Destroy(obstacle.gameObject); // Remove the object
-                obstacle.gameObject.SetActive(false);
-            }
-        }
-    }
-
-    void UpdateDifficulty() {
+    void OldDifficulty() {
         // Increase speed by 1 every 10 seconds
         if (elapsedTime > speedIncreaseInterval) {
             Obstacle.verticleSpeed += -2;
@@ -140,6 +181,17 @@ public class GameManager : MonoBehaviour
             spawnRate = 0.8f;
         }
     }
+    void ClearObstacles() {
+        Obstacle[] obstacles = FindObjectsOfType<Obstacle>();
+        foreach (Obstacle obstacle in obstacles) {
+            if (obstacle.GetType() != typeof(ScrollingBackground))
+            {
+                //Destroy(obstacle.gameObject); // Remove the object
+                obstacle.gameObject.SetActive(false);
+            }
+        }
+    }
+
     void AddLanes() {
         if (numLanes != 7) {
             MovingObstacle.xBoundary = 35;
@@ -196,7 +248,7 @@ public class GameManager : MonoBehaviour
         // 1: 100
         // 2: 50|50
         // 3: 40|40|20
-        // 4: 30|30|20|20
+        // 4: 35|35|20|10
         switch(numObstacleTypes) {
             case 1: 
                 return 0;
@@ -213,11 +265,11 @@ public class GameManager : MonoBehaviour
                 }
             case 4:
                 randomNum = Random.Range(0, 99);
-                if (randomNum <= 30) {
+                if (randomNum <= 35) {
                     return 0;
-                } else if (randomNum <= 60) {
+                } else if (randomNum <= 70) {
                     return 1;
-                } else if (randomNum <= 80) {
+                } else if (randomNum <= 90) {
                     return 2;
                 } else {
                     return 3;

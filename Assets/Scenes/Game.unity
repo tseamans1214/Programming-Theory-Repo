@@ -1762,6 +1762,7 @@ MonoBehaviour:
   spawnRate: 0.8
   spawnRateRange: 1
   speedIncreaseInterval: 10
+  difficultyIncreaseInterval: 10
   lane0: {fileID: 1762278448}
   lane6: {fileID: 2052892354}
   objectPooler: {fileID: 0}
@@ -2246,7 +2247,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -5307,6 +5308,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c6540ebf684ecd74bb5ff36b8ff4c124, type: 3}
   - {fileID: 8300000, guid: cee44225a8da40247a94305aadfd249d, type: 3}
   - {fileID: 8300000, guid: d249b98e927922c4b90dfb16155be4fe, type: 3}
+  - {fileID: 8300000, guid: 055a2c523d353c44da0d51f6c061136a, type: 3}
+  - {fileID: 8300000, guid: 382ce18f0b7b19d488b83291388e4099, type: 3}
   currentSongIndex: 0
 --- !u!82 &2134144304
 AudioSource:

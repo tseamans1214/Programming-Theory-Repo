@@ -21,6 +21,8 @@ public class SongNameDisplay : MonoBehaviour
         authors.Add("Matthew Pablo");
         authors.Add("Centurion_of_war");
         authors.Add("Juhani Junkala");
+        authors.Add("HoliznaCC0");
+        authors.Add("Nene");
         ShowSongName(AudioManager.Instance.playlist[currentSongIndex].name, authors[currentSongIndex]);
     }
 

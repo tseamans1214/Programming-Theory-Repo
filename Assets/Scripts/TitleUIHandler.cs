@@ -8,22 +8,29 @@ using mk.profanity;
 using UnityEditor;
 #endif
 
-public class TitleUIHandler : MonoBehaviour
+public class TitleUIHandler : UserInterfaceManager
 {
     [SerializeField] private TMP_InputField playerNameField;
-    [SerializeField] private TextMeshProUGUI highScoreText;
+    [SerializeField] private TextMeshProUGUI highscoreText;
     [SerializeField] private GameObject profanityPanel;
+    [SerializeField] private GameObject profanityPanelL;
+    [SerializeField] private GameObject profanityPanelP;
 
     ProfanityFilter profanityFilter;
 
     void Start()
     {
+        if (GameObject.Find("OrientationManager").GetComponent<OrientationManager>().GetCurrentCanvasName() == "Canvas Landscape") {
+            SetToLandscapeElements();
+        } else {
+            SetToPortraitElements();
+        }
         profanityFilter = new ProfanityFilter();
         ScoreManager.Instance.LoadPlayerData();
         if (ScoreManager.Instance.highScorePlayerScore > 0) {
-            highScoreText.text = ScoreManager.Instance.highScorePlayerName + " : " + FormatTime(ScoreManager.Instance.highScorePlayerScore);
+            highscoreText.text = ScoreManager.Instance.highScorePlayerName + " : " + FormatTime(ScoreManager.Instance.highScorePlayerScore);
         } else {
-            highScoreText.text = "None Recorded";
+            highscoreText.text = "None Recorded";
         }
         #if UNITY_WEBGL
         if (Application.platform == RuntimePlatform.WebGLPlayer)
@@ -85,6 +92,48 @@ public class TitleUIHandler : MonoBehaviour
            
         } else {
             StartGame();
+        }
+    }
+
+    public override void SetToLandscapeElements() {
+        playerNameField = GameObject.FindGameObjectWithTag("PlayerNameInputL").GetComponent<TMP_InputField>();
+        highscoreText = GameObject.FindGameObjectWithTag("HighscoreTextL").GetComponent<TextMeshProUGUI>();
+
+        if (profanityPanel.activeSelf) {
+            profanityPanel = profanityPanelL;
+            profanityPanel.SetActive(true);
+        } else {
+            profanityPanel = profanityPanelL;
+        }
+        // Update Values
+        if (ScoreManager.Instance) {
+            ScoreManager.Instance.LoadPlayerData();
+            if (ScoreManager.Instance.highScorePlayerScore > 0) {
+                highscoreText.text = ScoreManager.Instance.highScorePlayerName 
+                    + " : " + FormatTime(ScoreManager.Instance.highScorePlayerScore);
+            } else {
+                highscoreText.text = "None Recorded";
+            }
+        }
+    }
+    public override void SetToPortraitElements() {
+        playerNameField = GameObject.FindGameObjectWithTag("PlayerNameInputP").GetComponent<TMP_InputField>();
+        highscoreText = GameObject.FindGameObjectWithTag("HighscoreTextP").GetComponent<TextMeshProUGUI>();
+
+        if (profanityPanel.activeSelf) {
+            profanityPanel = profanityPanelP;
+            profanityPanel.SetActive(true);
+        } else {
+            profanityPanel = profanityPanelP;
+        }
+        // Update Values
+        if (ScoreManager.Instance) {
+            if (ScoreManager.Instance.highScorePlayerScore > 0) {
+                highscoreText.text = ScoreManager.Instance.highScorePlayerName 
+                    + " : " + FormatTime(ScoreManager.Instance.highScorePlayerScore);
+            } else {
+                highscoreText.text = "None Recorded";
+            }
         }
     }
 }

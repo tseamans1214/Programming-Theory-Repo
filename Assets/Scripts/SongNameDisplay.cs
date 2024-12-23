@@ -3,19 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class SongNameDisplay : MonoBehaviour
+public class SongNameDisplay : UserInterfaceManager
 {
-    [SerializeField] private TextMeshProUGUI songNameText;
+    private TextMeshProUGUI songNameText;
     private int currentSongIndex;
     private List<string> authors;
 
     public float displayTime = 3f; // Time to display the song name
     public float fadeDuration = 1f; // Duration of the fade-out effect
     private Coroutine fadeCoroutine;
+    private string currentText;
+
      
     // Start is called before the first frame update
     void Start()
     {
+        if (GameObject.Find("OrientationManager").GetComponent<OrientationManager>().GetCurrentCanvasName() == "Canvas Landscape") {
+            SetToLandscapeElements();
+        } else {
+            SetToPortraitElements();
+        }
         currentSongIndex = AudioManager.Instance.currentSongIndex;
         authors = new List<string>();
         authors.Add("Matthew Pablo");
@@ -43,8 +50,11 @@ public class SongNameDisplay : MonoBehaviour
             StopCoroutine(fadeCoroutine);
         }
 
+        //UpdateSongNameTextReference();
+
         // Set the song name and make the text fully visible
-        songNameText.text = "Now playing...\n" + songName + "\nBy:" + author;
+        currentText = "Now playing...\n" + songName + "\nBy:" + author;
+        songNameText.text = currentText;
         songNameText.color = new Color(songNameText.color.r, songNameText.color.g, songNameText.color.b, 1);
 
         // Start the fade-out coroutine after the display time
@@ -70,5 +80,45 @@ public class SongNameDisplay : MonoBehaviour
 
         // Ensure the text is fully transparent
         songNameText.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0);
+    }
+
+    void UpdateSongNameTextReference()
+    {
+        // Find all objects with the "PlayerScore" tag
+        GameObject[] songNameTexts = GameObject.FindGameObjectsWithTag("SongNameText");
+
+        foreach (GameObject obj in songNameTexts)
+        {
+            if (obj.activeInHierarchy) // Check if the GameObject is active
+            {
+                songNameText = obj.GetComponent<TextMeshProUGUI>();
+                break;
+            }
+        }
+
+        if (songNameText == null)
+        {
+            Debug.LogError("No active SongNameText text found!");
+        }
+    }
+
+    public void UpdateSongText(int score)
+    {
+        if (songNameText == null)
+            UpdateSongNameTextReference();
+
+        if (songNameText != null)
+        {
+            songNameText.text = currentText;
+        }
+    }
+
+    public override void SetToLandscapeElements() {
+        songNameText = GameObject.FindGameObjectWithTag("SongNameTextL").GetComponent<TextMeshProUGUI>();
+        //songNameText.text = currentText;
+    }
+    public override void SetToPortraitElements() {
+        songNameText = GameObject.FindGameObjectWithTag("SongNameTextP").GetComponent<TextMeshProUGUI>();
+        //songNameText.text = currentText;
     }
 }

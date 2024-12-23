@@ -8,7 +8,7 @@ using TMPro;
 using UnityEditor;
 #endif
 
-public class GameManager : MonoBehaviour
+public class GameManager : UserInterfaceManager
 {
     public static GameManager Instance { get; private set; } // ENCAPSULATION
     public static bool isGameOver;
@@ -22,6 +22,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI playerNameText;
     [SerializeField] private TextMeshProUGUI highscoreText;
     [SerializeField] private GameObject gameOverMenu;
+    [SerializeField] private GameObject gameOverMenuL;
+    [SerializeField] private GameObject gameOverMenuP;
+
+    // Cameras
+    [SerializeField] private GameObject landscapeCamera;
+    [SerializeField] private GameObject portraitCamera;
 
     // Variables for increasting difficulty
     [SerializeField] private float spawnRate = 1.0f;
@@ -391,5 +397,69 @@ public class GameManager : MonoBehaviour
 
         // Return a formatted string in HH:MM:SS
         return $"{hours:D2}:{minutes:D2}:{seconds:D2}";
+    }
+
+    public override void SetToLandscapeElements() {
+        // Change References to Landscape ones
+        timerText = GameObject.FindGameObjectWithTag("TimerTextL").GetComponent<TextMeshProUGUI>();
+        playerNameText = GameObject.FindGameObjectWithTag("PlayerNameTextL").GetComponent<TextMeshProUGUI>();
+        highscoreText = GameObject.FindGameObjectWithTag("HighscoreTextL").GetComponent<TextMeshProUGUI>();
+        //gameOverMenu = GameObject.FindGameObjectWithTag("GameOverMenuL");
+        if (gameOverMenu.activeSelf) {
+            gameOverMenu = gameOverMenuL;
+            gameOverMenu.SetActive(true);
+        } else {
+            gameOverMenu = gameOverMenuL;
+        }
+
+        // Update values
+        timerText.text = "Time: " + FormatTime(elapsedTime);
+        playerNameText.text = "Player: " + ScoreManager.Instance.currentPlayerName;
+        if (ScoreManager.Instance.highScorePlayerScore > 0) {
+            highscoreText.text = ScoreManager.Instance.highScorePlayerName 
+                + " : " + FormatTime(ScoreManager.Instance.highScorePlayerScore);
+        } else {
+            highscoreText.text = "None Recorded";
+        }
+
+        // Enable Landscape Camera
+        //GameObject landscapeCamera = GameObject.Find("Landscape Camera");
+        //GameObject portraitCamera = GameObject.Find("Portrait Camera");
+        landscapeCamera.SetActive(true);
+        portraitCamera.SetActive(false);
+
+    }
+    public override void SetToPortraitElements() {
+        // Change References to Portrait ones
+        timerText = GameObject.FindGameObjectWithTag("TimerTextP").GetComponent<TextMeshProUGUI>();
+        playerNameText = GameObject.FindGameObjectWithTag("PlayerNameTextP").GetComponent<TextMeshProUGUI>();
+        highscoreText = GameObject.FindGameObjectWithTag("HighscoreTextP").GetComponent<TextMeshProUGUI>();
+        // gameOverMenu = GameObject.FindGameObjectWithTag("GameOverMenuP");
+        // if (gameOverMenu == null) {
+        //     Debug.Log("gameovermenu is null");
+        // }
+        if (gameOverMenu.activeSelf) {
+            gameOverMenu = gameOverMenuP;
+            gameOverMenu.SetActive(true);
+        } else {
+            gameOverMenu = gameOverMenuP;
+        }
+
+        // Update values
+        timerText.text = "Time: " + FormatTime(elapsedTime);
+        playerNameText.text = "Player: " + ScoreManager.Instance.currentPlayerName;
+        if (ScoreManager.Instance.highScorePlayerScore > 0) {
+            highscoreText.text = ScoreManager.Instance.highScorePlayerName 
+                + " : " + FormatTime(ScoreManager.Instance.highScorePlayerScore);
+        } else {
+            highscoreText.text = "None Recorded";
+        }
+
+        // Enable Portrait Camera
+        //GameObject landscapeCamera = GameObject.Find("Landscape Camera");
+        //GameObject portraitCamera = GameObject.Find("Portrait Camera");
+        landscapeCamera.SetActive(false);
+        portraitCamera.SetActive(true);
+
     }
 }

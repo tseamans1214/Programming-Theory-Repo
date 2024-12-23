@@ -5,7 +5,22 @@ TagManager:
   serializedVersion: 2
   tags:
   - Obstacle
-  - GameOverMenu
+  - SongNameTextL
+  - SongNameTextP
+  - PlayerNameTextL
+  - PlayerNameTextP
+  - TimerTextL
+  - TimerTextP
+  - HighscoreTextL
+  - GameOverMenuL
+  - GameOverMenuP
+  - SkipButton
+  - MuteButton
+  - HighscoreTextP
+  - PlayerNameInputL
+  - PlayerNameInputP
+  - ProfanityPanelL
+  - ProfanityPanelP
   layers:
   - Default
   - TransparentFX

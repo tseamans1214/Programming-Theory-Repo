@@ -31,7 +31,6 @@ public class OrientationManager : MonoBehaviour
         // Detect orientation changes (mobile)
         if (Screen.orientation != lastOrientation)
         {
-            Debug.Log($"Orientation changed from {lastOrientation} to {Screen.orientation}");
             OnOrientationChange(Screen.orientation);
             lastOrientation = Screen.orientation;
         }
@@ -39,27 +38,10 @@ public class OrientationManager : MonoBehaviour
         // Detect screen size changes (web/desktop)
         if (Screen.width != lastWidth || Screen.height != lastHeight)
         {
-            Debug.Log($"Screen size changed: {Screen.width}x{Screen.height}");
             UpdateOrientation();
             lastWidth = Screen.width;
             lastHeight = Screen.height;
         }
-        // if (Input.deviceOrientation == DeviceOrientation.LandscapeLeft || 
-        //     Input.deviceOrientation == DeviceOrientation.LandscapeRight)
-        // {
-        //     EnableLandscape();
-        //     // Get all objects in the scene that inherit from the OrientationManager class
-        //     OrientationManager[] orientationManagers = FindObjectsOfType<OrientationManager>();
-        //     foreach (OrientationManager obstacle in orientationManagers)
-        // {
-        //     Debug.Log($"Found obstacle: {obstacle.name}");
-        // }
-        // }
-        // else if (Input.deviceOrientation == DeviceOrientation.Portrait || 
-        //          Input.deviceOrientation == DeviceOrientation.PortraitUpsideDown)
-        // {
-        //     EnablePortrait();
-        // }
     }
 
     private void OnOrientationChange(ScreenOrientation newOrientation)
@@ -104,16 +86,6 @@ public class OrientationManager : MonoBehaviour
             EnablePortrait();
     }
 
-    // public GameObject GetUIElement(string elementName)
-    // {
-    //     if (currentCanvas != null)
-    //     {
-    //         Transform element = currentCanvas.transform.Find(elementName);
-    //         if (element != null)
-    //             return element.gameObject;
-    //     }
-    //     return null;
-    // }
     public string GetCurrentCanvasName() {
         return currentCanvas.name;
     }

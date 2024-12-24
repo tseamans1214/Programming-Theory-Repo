@@ -5,10 +5,15 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.InputSystem;
 
-public class LeaderboardUIHandler : MonoBehaviour
+public class LeaderboardUIHandler : UserInterfaceManager
 {
     [SerializeField] private List<TextMeshProUGUI> leaderboardPlayerTexts;
     [SerializeField] private List<TextMeshProUGUI> leaderboardScoreTexts;
+    [SerializeField] private List<TextMeshProUGUI> leaderboardPlayerTextsLandscape;
+    [SerializeField] private List<TextMeshProUGUI> leaderboardScoreTextsLandscape;
+
+    [SerializeField] private List<TextMeshProUGUI> leaderboardPlayerTextsPortrait;
+    [SerializeField] private List<TextMeshProUGUI> leaderboardScoreTextsPortrait;
     private int currentIndex = 0;
     private List<PlayerScore> leaderboardScores;
 
@@ -49,6 +54,13 @@ public class LeaderboardUIHandler : MonoBehaviour
     private void OnScoresReceived(List<PlayerScore> scores)
     {
         leaderboardScores = scores;
+        if (GameObject.Find("OrientationManager").GetComponent<OrientationManager>().GetCurrentCanvasName() == "Canvas Landscape") {
+            SetToLandscapeElements();
+            
+        } else {
+            SetToPortraitElements();
+            //leaderboardPlayerTexts = leaderboardPlayerTextsPortrait;
+        }
         PopulateLeaderboardScores();
     }
     private void PopulateLeaderboardScores() {
@@ -107,5 +119,26 @@ public class LeaderboardUIHandler : MonoBehaviour
         {
             IncrementLeaderboardIndex(10);
         }
+    }
+
+    public override void SetToLandscapeElements() {
+        if (leaderboardScores != null) {
+            //StartCoroutine(ScoreManager.Instance.GetScores(OnScoresReceived, OnScoresError));
+            leaderboardPlayerTexts = leaderboardPlayerTextsLandscape;
+            leaderboardScoreTexts = leaderboardScoreTextsLandscape;
+            PopulateLeaderboardScores();
+        }
+        //leaderboardPlayerTexts = leaderboardPlayerTextsLandscape;
+        //PopulateLeaderboardScores();
+    }
+    public override void SetToPortraitElements() {
+         if (leaderboardScores != null) {
+            leaderboardPlayerTexts = leaderboardPlayerTextsPortrait;
+            leaderboardScoreTexts = leaderboardScoreTextsPortrait;
+            PopulateLeaderboardScores();
+        }
+        //leaderboardPlayerTexts = leaderboardPlayerTextsPortrait;
+        //PopulateLeaderboardScores();
+        
     }
 }
